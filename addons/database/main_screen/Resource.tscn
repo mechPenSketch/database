@@ -1,0 +1,12 @@
+[gd_scene format=2]
+
+[node name="Resource" type="ScrollContainer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 502.0
+margin_right = 494.0
+margin_bottom = -12.0
+scroll_horizontal_enabled = false
+
+[node name="GridContainer" type="GridContainer" parent="."]
+columns = 3

@@ -25,18 +25,25 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="LineEdit" type="RichTextLabel" parent="HSplitContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="HSplitContainer"]
 margin_right = 302.0
 margin_bottom = 564.0
 size_flags_horizontal = 3
-text = "Something"
 
-[node name="Content" type="ScrollContainer" parent="HSplitContainer"]
+[node name="Search" type="LineEdit" parent="HSplitContainer/VBoxContainer"]
+margin_right = 302.0
+margin_bottom = 24.0
+text = "Filter resources"
+
+[node name="ItemList" type="ItemList" parent="HSplitContainer/VBoxContainer"]
+margin_top = 28.0
+margin_right = 302.0
+margin_bottom = 564.0
+size_flags_vertical = 3
+
+[node name="TabContainer" type="TabContainer" parent="HSplitContainer"]
 margin_left = 314.0
 margin_right = 1016.0
 margin_bottom = 564.0
 size_flags_horizontal = 3
-scroll_horizontal_enabled = false
-
-[node name="GridContainer" type="GridContainer" parent="HSplitContainer/Content"]
-columns = 3
+tabs_visible = false
