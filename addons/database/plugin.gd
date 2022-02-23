@@ -3,7 +3,7 @@ extends EditorPlugin
 
 const MainPanel = preload("main_screen/MainScreen.tscn")
 var main_panel_instance
-const Tab = preload("main_screen/Tab.tscn")
+const CategoryTab = preload("main_screen/Category.tscn")
 
 const DATA_DIR = "res://data"
 
@@ -33,27 +33,13 @@ func _enter_tree():
 				if dir.current_is_dir():
 					
 					# ADD NEW TAB TO CONTAINER
-					var tab_instance = Tab.instance()
+					var tab_instance = CategoryTab.instance()
 					tab_instance.set_name(folder_name.capitalize())
 					main_panel_instance.add_child(tab_instance)
 					
 					# ADD LIST OF FILES INTO LINEEDIT
-					var sub_dir = Directory.new()
-					#	SUB OPEN ERROR
-					var sub_oe = sub_dir.open(DATA_DIR +"/"+ folder_name)
-					
-					match sub_oe:
-						OK:
-							var le_txt = ""
-							sub_dir.list_dir_begin(true)
-							var file_name = sub_dir.get_next()
-							while file_name != "":
-								#print(file_name)
-								le_txt += file_name
-								file_name = sub_dir.get_next()
-							sub_dir.list_dir_end()
-						_:
-							print(sub_oe)
+					var dir_path = DATA_DIR +"/"+ folder_name
+					tab_instance.update_file_list(dir_path)
 					
 				folder_name = dir.get_next()
 			dir.list_dir_end()

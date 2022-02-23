@@ -1,6 +1,8 @@
-[gd_scene format=2]
+[gd_scene load_steps=2 format=2]
 
-[node name="Tab" type="Tabs"]
+[ext_resource path="res://addons/database/main_screen/category_tab.gd" type="Script" id=1]
+
+[node name="Category" type="Tabs"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 4.0
@@ -10,6 +12,7 @@ margin_bottom = -4.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 scrolling_enabled = false
+script = ExtResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
