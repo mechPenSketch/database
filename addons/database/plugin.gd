@@ -33,7 +33,7 @@ func _enter_tree():
 					# ADD NEW TAB TO CONTAINER
 					var tab_instance = CategoryTab.instance()
 					tab_instance.set_name(folder_name.capitalize())
-					main_panel_instance.add_child(tab_instance)
+					tab_container.add_child(tab_instance)
 					
 					# ADD LIST OF FILES INTO LINEEDIT
 					var dir_path = DATA_DIR +"/"+ folder_name
@@ -41,6 +41,7 @@ func _enter_tree():
 					
 				folder_name = dir.get_next()
 			dir.list_dir_end()
+			tab_container.move_child(tab_container.get_node("+"), tab_container.get_child_count() - 1)
 		ERR_INVALID_PARAMETER:
 			# NEW FOLDER
 			dir.make_dir("data")

@@ -19,8 +19,15 @@ func update_file_list(dir_path:String):
 			while file_name != "":
 				# IF FILE IS A RESOURCE
 				if ".tres" in file_name or ".res" in file_name:
-					$HSplitContainer/VBoxContainer/ItemList.add_item(file_name)
+					$VBoxContainer/HSplitContainer/VBoxContainer/ItemList.add_item(file_name)
+					
+					# ADD NEW TAB
+					var resource_inst = ResourceContainer.instance()
+					$VBoxContainer/HSplitContainer/TabContainer.add_child(resource_inst)
 				file_name = sub_dir.get_next()
 			sub_dir.list_dir_end()
 		_:
 			print(sub_oe)
+
+func _on_item_activated(i):
+	$VBoxContainer/HSplitContainer/TabContainer.set_current_tab(i)
