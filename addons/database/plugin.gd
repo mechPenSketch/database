@@ -47,27 +47,6 @@ func _enter_tree():
 			dir.make_dir("data")
 		_:
 			print(open_error)
-			
-	# FIND MAIN SCREEN SCRIPT EDITOR
-	#	@@6509/@@6511
-	#	@@6809/@@6679/@@6622
-	#	@@6809/@@6801/@@6688/@@6710
-	#	@@6931/@@6818/@@6840
-
-	#get_editor_interface().get_script_editor().print_tree_pretty()
-	#print_node(get_editor_interface().get_script_editor())
-	#print(get_editor_interface().get_script_editor().get_node("@@6509/@@6511").get_children())
-
-func print_node(nd):
-	if nd is HSplitContainer:
-		var node_path = get_editor_interface().get_script_editor().get_path_to(nd)
-		print(node_path)
-		#var stock_nd = nd
-		#for i in node_path.get_name_count():
-		#	print(stock_nd)
-		#	stock_nd = stock_nd.get_parent()
-	for c in nd.get_children():
-		print_node(c)
 
 func _exit_tree():
 	if main_panel_instance:

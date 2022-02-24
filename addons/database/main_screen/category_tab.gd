@@ -1,7 +1,7 @@
 tool
 extends Tabs
 
-# COMPARED WITH SCRIPT EDITOR
+# COMPARING SCRIPT EDITOR
 # 	@@6519, which lists gdscript files, is an ItemList.
 # 	@@6534, which is the space that directly edit scripts, is a TabContainer.
 
@@ -24,6 +24,7 @@ func update_file_list(dir_path:String):
 					# ADD NEW TAB
 					var resource_inst = ResourceContainer.instance()
 					$VBoxContainer/HSplitContainer/TabContainer.add_child(resource_inst)
+					resource_inst.list_properties(dir_path + "/" + file_name)
 				file_name = sub_dir.get_next()
 			sub_dir.list_dir_end()
 		_:
