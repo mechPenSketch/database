@@ -1,6 +1,8 @@
 tool
 extends Tabs
 
+export(Texture) var default_item_icon
+
 # COMPARING SCRIPT EDITOR
 # 	@@6519, which lists gdscript files, is an ItemList.
 # 	@@6534, which is the space that directly edit scripts, is a TabContainer.
@@ -19,7 +21,7 @@ func update_file_list(dir_path:String):
 			while file_name != "":
 				# IF FILE IS A RESOURCE
 				if ".tres" in file_name or ".res" in file_name:
-					$VBoxContainer/HSplitContainer/VBoxContainer/ItemList.add_item(file_name)
+					$VBoxContainer/HSplitContainer/VBoxContainer/ItemList.add_item(file_name, default_item_icon)
 					
 					# ADD NEW TAB
 					var resource_inst = ResourceContainer.instance()
