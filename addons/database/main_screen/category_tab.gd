@@ -26,7 +26,7 @@ func update_file_list(dir_path:String):
 					# ADD NEW TAB
 					var resource_inst = ResourceContainer.instance()
 					$VBoxContainer/HSplitContainer/TabContainer.add_child(resource_inst)
-					resource_inst.list_properties(dir_path + "/" + file_name)
+					resource_inst.list_properties(self, dir_path + "/" + file_name, file_name)
 				file_name = sub_dir.get_next()
 			sub_dir.list_dir_end()
 		_:
