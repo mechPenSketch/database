@@ -29,9 +29,16 @@ func list_properties(category, filepath:String, fn):
 			var pe_inst = pe.instance()
 			pe_inst.set_property(pl)
 			$VBoxContainer.add_child(pe_inst)
+			
+			# VALUE
+			var value = associated_resource.get(pl["name"])
 			match pe_type:
 				"String":
-					pe_inst.get_node("LineEdit").connect("text_entered", self, "_on_value_entered", [pe_inst.get_index()])
+					var line_edit = pe_inst.get_node("LineEdit")
+					line_edit.connect("text_entered", self, "_on_value_entered", [pe_inst.get_index()])
+					
+					if value:
+						line_edit.set_text(value)
 
 func get_pe_by_type(property):
 	match property["type"]:

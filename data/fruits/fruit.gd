@@ -3,4 +3,4 @@ extends Resource
 var color
 export(String) var name
 export(int) var index
-export(float) var weight = 20.0
+export(String) var weight = "20.0"
