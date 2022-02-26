@@ -34,3 +34,12 @@ func update_file_list(dir_path:String):
 
 func _on_item_activated(i):
 	$VBoxContainer/HSplitContainer/TabContainer.set_current_tab(i)
+
+func save_resource():
+	var tab_container = $VBoxContainer/HSplitContainer/TabContainer
+	tab_container.get_child(tab_container.get_current_tab()).save_resource()
+
+func save_all():
+	for c in $VBoxContainer/HSplitContainer/TabContainer:
+		if c.has_unsaved_changes:
+			c.save_resource()

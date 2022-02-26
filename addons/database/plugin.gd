@@ -7,6 +7,8 @@ const CategoryTab = preload("main_screen/Category.tscn")
 
 const DATA_DIR = "res://data"
 
+var current_main_screen_is_database
+
 func _enter_tree():
 	main_panel_instance = MainPanel.instance()
 	get_editor_interface().get_editor_viewport().add_child(main_panel_instance)
@@ -47,10 +49,23 @@ func _enter_tree():
 			dir.make_dir("data")
 		_:
 			print(open_error)
+			
+	connect("main_screen_changed", self, "_main_screen_changed")
 
 func _exit_tree():
 	if main_panel_instance:
 		main_panel_instance.queue_free()
+
+func _input(event):
+	if current_main_screen_is_database and event is InputEventKey and event.is_pressed() and event.get_scancode() == KEY_S:
+		if event.get_alt():
+			if event.get_control():
+				var tab_container = main_panel_instance.get_node("TabContainer")
+				tab_container.get_child(tab_container.get_current_tab()).save_resource()
+				print("Save current file")
+
+func _main_screen_changed(screen_name):
+	current_main_screen_is_database = screen_name == "Database"
 
 func _on_filesystem_changed():
 	pass
