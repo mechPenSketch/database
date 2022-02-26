@@ -62,7 +62,6 @@ func _input(event):
 			if event.get_control():
 				var tab_container = main_panel_instance.get_node("TabContainer")
 				tab_container.get_child(tab_container.get_current_tab()).save_resource()
-				print("Save current file")
 
 func _main_screen_changed(screen_name):
 	current_main_screen_is_database = screen_name == "Database"

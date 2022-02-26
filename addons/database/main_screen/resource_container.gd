@@ -35,6 +35,7 @@ func list_properties(c, fp:String, fn):
 			
 			# VALUE
 			var value = associated_resource.get(pl["name"])
+			pe_inst.prev_val = value
 			match pe_type:
 				"String":
 					var line_edit = pe_inst.get_node("LineEdit")
@@ -49,25 +50,22 @@ func get_pe_by_type(property):
 			return "String"
 
 func _on_value_changed(value, child_index):
-	var property_name = $VBoxContainer.get_child(child_index).property_name
-	if value != associated_resource.get(property_name):
+	associated_resource.set($VBoxContainer.get_child(child_index).property_name, value)
+	
+	if value != $VBoxContainer.get_child(child_index).prev_val:
 		set_unsaved_changes(true)
 
 func save_resource():
-	save_property($VBoxContainer)
 	ResourceSaver.save(file_path, associated_resource)
+	save_property_aftermath($VBoxContainer)
 	set_unsaved_changes(false)
 
-func save_property(node):
+func save_property_aftermath(node):
 	if node is VBoxContainer or node is ItemList:
 		for child in node.get_children():
-			save_property(child)
+			save_property_aftermath(child)
 	else:
-		var value
-		match node.file_name:
-			"String":
-				value = node.get_node("LineEdit").get_text()
-		associated_resource.set(node.property_name, value)
+		node.prev_val = associated_resource.get(node.property_name)
 
 func set_unsaved_changes(value:bool):
 	has_unsaved_changes = value

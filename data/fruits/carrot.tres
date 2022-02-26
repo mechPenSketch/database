@@ -4,4 +4,6 @@
 
 [resource]
 script = ExtResource( 1 )
-shape = ""
+name = "Car Rotton"
+index = 0
+weight = "20.0"

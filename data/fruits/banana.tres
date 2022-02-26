@@ -4,3 +4,6 @@
 
 [resource]
 script = ExtResource( 1 )
+name = "Ballacks Nanabus"
+index = 0
+weight = "20.0"
