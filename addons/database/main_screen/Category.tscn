@@ -61,4 +61,4 @@ margin_bottom = 564.0
 size_flags_horizontal = 3
 tabs_visible = false
 
-[connection signal="item_activated" from="VBoxContainer/HSplitContainer/VBoxContainer/ItemList" to="." method="_on_item_activated"]
+[connection signal="item_selected" from="VBoxContainer/HSplitContainer/VBoxContainer/ItemList" to="." method="_on_item_selected"]

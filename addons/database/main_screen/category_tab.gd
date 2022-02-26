@@ -32,7 +32,7 @@ func update_file_list(dir_path:String):
 		_:
 			print(sub_oe)
 
-func _on_item_activated(i):
+func _on_item_selected(i):
 	$VBoxContainer/HSplitContainer/TabContainer.set_current_tab(i)
 
 func save_resource():
