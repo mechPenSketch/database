@@ -4,6 +4,6 @@
 
 [resource]
 script = ExtResource( 1 )
-name = "Applicios Scrumble"
+name = "App Mumble"
 index = ""
 weight = "20.0"

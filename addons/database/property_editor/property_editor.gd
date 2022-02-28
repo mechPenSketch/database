@@ -3,6 +3,7 @@ extends HBoxContainer
 
 var property_name:String
 var file_name:String
+var tree_index = []
 
 var prev_val
 
