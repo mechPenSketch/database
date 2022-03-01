@@ -5,5 +5,7 @@
 [resource]
 script = ExtResource( 1 )
 name = "App Mumble"
+is_actually_a_veggie = true
 index = ""
 weight = "20.0"
+main_color = Color( 0, 0, 0, 1 )

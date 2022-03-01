@@ -2,5 +2,7 @@ extends Resource
 
 var color
 export(String) var name
+export(bool) var is_actually_a_veggie
 export(int) var index
-export(String) var weight = "20.0"
+export(float) var weight = "20.0"
+export(Color) var main_color

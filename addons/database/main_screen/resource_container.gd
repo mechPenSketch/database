@@ -46,9 +46,17 @@ func list_properties(c, fp:String, fn):
 					
 					if value:
 						line_edit.set_text(value)
+				"Bool":
+					var check_box = pe_inst.get_node("CheckBox")
+					check_box.connect("toggled", self, "_on_value_changed", [pe_inst.tree_index])
+					
+					if value:
+						check_box.set_pressed(value)
 
 func get_pe_by_type(property):
 	match property["type"]:
+		TYPE_BOOL:
+			return "Bool"
 		_:
 			return "String"
 
