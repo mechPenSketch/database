@@ -40,23 +40,33 @@ func list_properties(c, fp:String, fn):
 			var value = associated_resource.get(pl["name"])
 			pe_inst.prev_val = value
 			match pe_type:
-				"String":
-					var line_edit = pe_inst.get_node("LineEdit")
-					line_edit.connect("text_changed", self, "_on_value_changed", [pe_inst.tree_index])
-					
-					if value:
-						line_edit.set_text(value)
 				"Bool":
 					var check_box = pe_inst.get_node("CheckBox")
 					check_box.connect("toggled", self, "_on_value_changed", [pe_inst.tree_index])
 					
 					if value:
 						check_box.set_pressed(value)
+				"Float", "Int":
+					var spinbox = pe_inst.get_node("SpinBox")
+					spinbox.connect("value_changed", self, "_on_value_changed", [pe_inst.tree_index])
+					
+					if value:
+						spinbox.set_value(float(value))
+				"String":
+					var line_edit = pe_inst.get_node("LineEdit")
+					line_edit.connect("text_changed", self, "_on_value_changed", [pe_inst.tree_index])
+					
+					if value:
+						line_edit.set_text(value)
 
 func get_pe_by_type(property):
 	match property["type"]:
 		TYPE_BOOL:
 			return "Bool"
+		TYPE_REAL:
+			return "Float"
+		TYPE_INT:
+			return "Int"
 		_:
 			return "String"
 

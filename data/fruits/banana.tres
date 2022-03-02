@@ -7,5 +7,5 @@ script = ExtResource( 1 )
 name = "Ban Nah"
 is_actually_a_veggie = false
 index = 0
-weight = "20.0"
+weight = 18.0
 main_color = Color( 0, 0, 0, 1 )
