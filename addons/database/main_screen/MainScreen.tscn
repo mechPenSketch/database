@@ -1,28 +1,60 @@
-[gd_scene format=2]
+[gd_scene load_steps=3 format=2]
 
-[node name="DatabaseEditor" type="Control"]
+[ext_resource path="res://addons/database/icons/Search.svg" type="Texture" id=1]
+[ext_resource path="res://addons/database/main_screen/main_screen.gd" type="Script" id=2]
+
+[node name="DatabaseContainer" type="MarginContainer"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-__meta__ = {
-"_edit_use_anchors_": false
-}
+custom_constants/margin_right = 5
+custom_constants/margin_top = 5
+custom_constants/margin_left = 5
+custom_constants/margin_bottom = 5
+script = ExtResource( 2 )
 
-[node name="TabContainer" type="TabContainer" parent="."]
-anchor_right = 1.0
-anchor_bottom = 1.0
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+margin_left = 5.0
+margin_top = 5.0
+margin_right = 1019.0
+margin_bottom = 595.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
+
+[node name="HSplitContainer" type="HSplitContainer" parent="VBoxContainer"]
+margin_right = 1014.0
+margin_bottom = 590.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+split_offset = -200
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="+" type="Tabs" parent="TabContainer"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_left = 4.0
-margin_top = 32.0
-margin_right = -4.0
-margin_bottom = -4.0
-scrolling_enabled = false
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/HSplitContainer"]
+margin_right = 301.0
+margin_bottom = 590.0
+size_flags_horizontal = 3
+
+[node name="Search" type="LineEdit" parent="VBoxContainer/HSplitContainer/VBoxContainer"]
+margin_right = 301.0
+margin_bottom = 26.0
+right_icon = ExtResource( 1 )
+placeholder_text = "Filter resources"
+
+[node name="Tree" type="Tree" parent="VBoxContainer/HSplitContainer/VBoxContainer"]
+margin_top = 30.0
+margin_right = 301.0
+margin_bottom = 590.0
+size_flags_vertical = 3
+
+[node name="TabContainer" type="TabContainer" parent="VBoxContainer/HSplitContainer"]
+margin_left = 313.0
+margin_right = 1014.0
+margin_bottom = 590.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+tabs_visible = false
+
+[connection signal="item_selected" from="VBoxContainer/HSplitContainer/VBoxContainer/Tree" to="." method="_on_item_selected"]

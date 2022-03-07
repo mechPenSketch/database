@@ -11,6 +11,7 @@ var file_path
 const base_dir = "res://addons/database/property_editor/"
 const extension = ".tscn"
 
+var associated_treeitem
 var associated_resource
 var associated_script
 var has_unsaved_changes:bool setget set_unsaved_changes
@@ -99,4 +100,4 @@ func set_unsaved_changes(value:bool):
 	if value:
 		new_text += "(*)"
 	
-	parent_category.get_node("VBoxContainer/HSplitContainer/VBoxContainer/ItemList").set_item_text(get_index(), new_text)
+	associated_treeitem.set_text(0, new_text)
