@@ -25,6 +25,9 @@ func _input(event):
 	if current_main_screen_is_database and event is InputEventKey and event.is_pressed() and event.get_scancode() == KEY_S and event.get_alt():
 		if event.get_control():
 			tab_container.get_child(tab_container.get_current_tab()).save_resource()
+		elif event.get_shift():
+			for c in tab_container.get_children():
+				c.save_resource()
 
 func _main_screen_changed(screen_name):
 	current_main_screen_is_database = screen_name == get_plugin_name()
