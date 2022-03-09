@@ -13,6 +13,12 @@ const ResourceContainer = preload("Resource.tscn")
 var filename_to_rindx = {} # RINDX: RESOURCE (CHILD) INDEX
 enum {TICOL_FILENAME}
 
+func _newcat_pressed():
+	print("new category")
+	
+func _newres_pressed():
+	print("new resource")
+
 func _on_item_selected():
 	var tree_item = tree_list.get_selected()
 	var selected_filename = tree_item.get_text(TICOL_FILENAME)
