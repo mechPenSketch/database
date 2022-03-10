@@ -82,9 +82,10 @@ func _on_value_changed(value, tree_index):
 		set_unsaved_changes(true)
 
 func save_resource():
-	ResourceSaver.save(file_path, associated_resource)
-	save_property_aftermath($VBoxContainer)
-	set_unsaved_changes(false)
+	if associated_treeitem:
+		ResourceSaver.save(file_path, associated_resource)
+		save_property_aftermath($VBoxContainer)
+		set_unsaved_changes(false)
 
 func save_property_aftermath(node):
 	if node is VBoxContainer or node is GridContainer:

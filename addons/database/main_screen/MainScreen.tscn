@@ -70,6 +70,7 @@ margin_top = 30.0
 margin_right = 301.0
 margin_bottom = 567.0
 size_flags_vertical = 3
+hide_root = true
 
 [node name="TabContainer" type="TabContainer" parent="VBoxContainer/HSplitContainer"]
 margin_left = 313.0
@@ -79,7 +80,45 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 tabs_visible = false
 
+[node name="NewCategory" type="ConfirmationDialog" parent="."]
+margin_left = 412.0
+margin_top = 254.0
+margin_right = 612.0
+margin_bottom = 340.0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+window_title = "Create New Category"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="NewCategory"]
+margin_left = 8.0
+margin_top = 8.0
+margin_right = 192.0
+margin_bottom = 50.0
+
+[node name="Label" type="Label" parent="NewCategory/VBoxContainer"]
+margin_right = 184.0
+margin_bottom = 14.0
+size_flags_horizontal = 3
+text = "Name:"
+
+[node name="LineEdit" type="LineEdit" parent="NewCategory/VBoxContainer"]
+margin_top = 18.0
+margin_right = 184.0
+margin_bottom = 42.0
+size_flags_horizontal = 3
+
+[node name="Duplicate" type="AcceptDialog" parent="."]
+margin_left = 438.0
+margin_top = 268.0
+margin_right = 585.0
+margin_bottom = 326.0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+window_title = "Warning!"
+dialog_text = "Duplicate file/folder."
+
 [connection signal="pressed" from="VBoxContainer/HBoxContainer/NewCategory" to="." method="_newcat_pressed"]
 [connection signal="pressed" from="VBoxContainer/HBoxContainer/NewResource" to="." method="_newres_pressed"]
 [connection signal="text_changed" from="VBoxContainer/HSplitContainer/VBoxContainer/Search" to="." method="_on_search_changed"]
 [connection signal="item_selected" from="VBoxContainer/HSplitContainer/VBoxContainer/Tree" to="." method="_on_item_selected"]
+[connection signal="confirmed" from="NewCategory" to="." method="_newcat_confirmed"]

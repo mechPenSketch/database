@@ -14,16 +14,39 @@ var filename_to_rindx = {} # RINDX: RESOURCE (CHILD) INDEX
 enum {TICOL_FILENAME}
 
 func _newcat_pressed():
-	print("new category")
+	$NewCategory.popup_centered()
 	
 func _newres_pressed():
 	print("new resource")
 
+func _newcat_confirmed():
+	var base_dir = Directory.new()
+	var open_error = base_dir.open(DATA_DIR)
+	
+	var new_folder_name = $NewCategory/VBoxContainer/LineEdit.get_text()
+	
+	if base_dir.dir_exists(new_folder_name):
+		$Duplicate.popup_centered()
+	else:
+		base_dir.make_dir(new_folder_name)
+		
+		# ADD SCRIPT
+		var new_filepath = DATA_DIR.plus_file(new_folder_name).plus_file("category.gd")
+		var file = File.new()
+		file.open(new_filepath, File.WRITE)
+		file.store_string("extends Resource")
+		file.close()
+
+func _on_filesystem_changed():
+	var search_text = $VBoxContainer/HSplitContainer/VBoxContainer/Search.get_text()
+	update_tree()
+
 func _on_item_selected():
 	var tree_item = tree_list.get_selected()
 	var selected_filename = tree_item.get_text(TICOL_FILENAME)
-	var resource_index = filename_to_rindx[selected_filename]
-	data_container.set_current_tab(resource_index)
+	if selected_filename in filename_to_rindx.keys():
+		var resource_index = filename_to_rindx[selected_filename]
+		data_container.set_current_tab(resource_index)
 
 func _on_search_changed(new_text):
 	update_tree(new_text)
@@ -36,7 +59,7 @@ func load_data():
 		OK:
 			# GO THROUGH DIRECTORY
 			main_dir.list_dir_begin(true, false)
-			go_through_folder(main_dir)
+			go_through_folder(main_dir, tree_list.create_item())
 		ERR_INVALID_PARAMETER:
 			# NEW FOLDER
 			main_dir.make_dir("data")
@@ -53,11 +76,11 @@ func go_through_folder(dir, parent_ti=null):
 			# ADD TO TREE
 			var category_folder = tree_list.create_item(parent_ti)
 			category_folder.set_icon(TICOL_FILENAME, icon_folder)
-			category_folder.set_text(TICOL_FILENAME, file_name.capitalize())
+			category_folder.set_text(TICOL_FILENAME, file_name)
 			
 			# GO THROUGH SUBFOLDER
 			var sub_dir = Directory.new()
-			var sub_dir_path = dir.get_current_dir() + "/" + file_name
+			var sub_dir_path = dir.get_current_dir().plus_file(file_name)
 			var open_error = sub_dir.open(sub_dir_path)
 			match open_error:
 				OK:
@@ -101,7 +124,7 @@ func update_tree(search:String = ""):
 		OK:
 			# GO THROUGH DIRECTORY
 			main_dir.list_dir_begin(true, false)
-			go_through_folder_for_update(main_dir, search)
+			go_through_folder_for_update(main_dir, search,  tree_list.create_item())
 		ERR_INVALID_PARAMETER:
 			print("missing data folder")
 		_:
@@ -119,7 +142,7 @@ func go_through_folder_for_update(dir, search, parent_ti=null):
 			# ADD TO TREE
 			var category_folder = tree_list.create_item(parent_ti)
 			category_folder.set_icon(TICOL_FILENAME, icon_folder)
-			category_folder.set_text(TICOL_FILENAME, file_name.capitalize())
+			category_folder.set_text(TICOL_FILENAME, file_name)
 			
 			# GO THROUGH SUBFOLDER
 			var sub_dir = Directory.new()

@@ -16,6 +16,10 @@ func _enter_tree():
 	tab_container = main_panel_instance.get_node("VBoxContainer/HSplitContainer/TabContainer")
 			
 	connect("main_screen_changed", self, "_main_screen_changed")
+	
+	# CONNECT NODES THAT CHANGES FILESYSTEM
+	main_panel_instance.get_node("NewCategory").connect("confirmed", self, "_on_filesystem_changed")
+	get_editor_interface().get_resource_filesystem().connect("filesystem_changed", main_panel_instance, "_on_filesystem_changed")
 
 func _exit_tree():
 	if main_panel_instance:
@@ -33,7 +37,7 @@ func _main_screen_changed(screen_name):
 	current_main_screen_is_database = screen_name == get_plugin_name()
 
 func _on_filesystem_changed():
-	pass
+	get_editor_interface().get_resource_filesystem().scan()
 
 func has_main_screen():
 	return true
