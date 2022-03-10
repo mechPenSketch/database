@@ -107,6 +107,68 @@ margin_right = 184.0
 margin_bottom = 42.0
 size_flags_horizontal = 3
 
+[node name="NewResource" type="ConfirmationDialog" parent="."]
+margin_left = 412.0
+margin_top = 251.0
+margin_right = 612.0
+margin_bottom = 343.0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+window_title = "Create New Resource"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="NewResource"]
+margin_left = 8.0
+margin_top = 8.0
+margin_right = 192.0
+margin_bottom = 56.0
+
+[node name="Name" type="HBoxContainer" parent="NewResource/VBoxContainer"]
+margin_right = 184.0
+margin_bottom = 24.0
+
+[node name="Label" type="Label" parent="NewResource/VBoxContainer/Name"]
+margin_top = 5.0
+margin_right = 89.0
+margin_bottom = 19.0
+size_flags_horizontal = 3
+text = "Name"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="NewResource/VBoxContainer/Name"]
+margin_left = 93.0
+margin_right = 184.0
+margin_bottom = 24.0
+size_flags_horizontal = 3
+
+[node name="LineEdit" type="LineEdit" parent="NewResource/VBoxContainer/Name/HBoxContainer"]
+margin_right = 58.0
+margin_bottom = 24.0
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="NewResource/VBoxContainer/Name/HBoxContainer"]
+margin_left = 62.0
+margin_top = 5.0
+margin_right = 91.0
+margin_bottom = 19.0
+text = ".tres"
+
+[node name="Category" type="HBoxContainer" parent="NewResource/VBoxContainer"]
+margin_top = 28.0
+margin_right = 184.0
+margin_bottom = 48.0
+
+[node name="Label" type="Label" parent="NewResource/VBoxContainer/Category"]
+margin_top = 3.0
+margin_right = 90.0
+margin_bottom = 17.0
+size_flags_horizontal = 3
+text = "Category"
+
+[node name="OptionButton" type="OptionButton" parent="NewResource/VBoxContainer/Category"]
+margin_left = 94.0
+margin_right = 184.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+
 [node name="Duplicate" type="AcceptDialog" parent="."]
 margin_left = 438.0
 margin_top = 268.0
@@ -122,3 +184,4 @@ dialog_text = "Duplicate file/folder."
 [connection signal="text_changed" from="VBoxContainer/HSplitContainer/VBoxContainer/Search" to="." method="_on_search_changed"]
 [connection signal="item_selected" from="VBoxContainer/HSplitContainer/VBoxContainer/Tree" to="." method="_on_item_selected"]
 [connection signal="confirmed" from="NewCategory" to="." method="_newcat_confirmed"]
+[connection signal="confirmed" from="NewResource" to="." method="_newres_confirmed"]
