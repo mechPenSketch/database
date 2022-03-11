@@ -16,7 +16,7 @@ After downloading, move the folder `addons/database` to your project folder.
 
 ## Goal-Post
 By v1.0, it is to have the following:
-* Add Categories and Resources
+* ~Add Categories and Resources~
 * Datatypes for Editing a Property
 
 ## License
