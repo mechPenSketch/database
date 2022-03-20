@@ -24,6 +24,7 @@ func list_properties(c, fp:String, fn):
 	
 	associated_resource = ResourceLoader.load(file_path)
 	associated_script = associated_resource.get_script()
+	#print(associated_script.get_script_property_list())
 	for pl in associated_script.get_script_property_list():
 		# THE PROPERTY SHOULD BE ABLE TO BE STORED
 		if pl["usage"] % 2 == PROPERTY_USAGE_STORAGE:
@@ -59,6 +60,14 @@ func list_properties(c, fp:String, fn):
 					
 					if value:
 						line_edit.set_text(value)
+				"Resource":
+					var option_btn = pe_inst.get_node("OptionButton")
+					setup_resource_options(option_btn)
+					
+					if value:
+						option_btn.set_text(value.get_name())
+					else:
+						option_btn.set_text("[empty]")
 
 func get_pe_by_type(property):
 	match property["type"]:
@@ -68,6 +77,8 @@ func get_pe_by_type(property):
 			return "Float"
 		TYPE_INT:
 			return "Int"
+		TYPE_OBJECT:
+			return "Resource"
 		_:
 			return "String"
 
@@ -102,3 +113,22 @@ func set_unsaved_changes(value:bool):
 		new_text += "(*)"
 	
 	associated_treeitem.set_text(0, new_text)
+
+func setup_resource_options(option_btn:OptionButton):
+	var popup:PopupMenu = option_btn.get_popup()
+	
+	popup.add_item("New Resource")
+	popup.add_item("New Class as...")
+	
+	popup.add_separator()
+	
+	popup.add_item("Quick Load")
+	popup.add_item("Load")
+	popup.add_item("Edit")
+	popup.add_item("Clear")
+	popup.add_item("Save")
+	
+	popup.add_separator()
+	
+	popup.add_item("Show in Filesystem")
+	popup.add_item("Show in Datasystem")

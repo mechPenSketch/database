@@ -18,6 +18,8 @@ onready var newres_name = $NewResource/VBoxContainer/Name/HBoxContainer/LineEdit
 onready var res_cat_options = $NewResource/VBoxContainer/Category/OptionButton
 signal changing_filesystem
 
+var cat_config = {}
+
 func _newcat_pressed():
 	$NewCategory.popup_centered()
 	
@@ -57,7 +59,7 @@ func _newres_confirmed():
 	var base_dir = Directory.new()
 	var open_error = base_dir.open(DATA_DIR.plus_file(res_cat_options.get_item_text(res_cat_options.get_selected())))
 	
-	var newres_name_ext = newres_name.get_text() + ".res"
+	var newres_name_ext = newres_name.get_text() + ".tres"
 	
 	if base_dir.file_exists(newres_name_ext):
 		$Duplicate.popup_centered()
@@ -157,7 +159,7 @@ func go_through_folder_for_update(dir, search, parent_ti=null):
 				if not file_name in filename_to_rindx.keys():
 					var resource_inst = ResourceContainer.instance()
 					data_container.add_child(resource_inst)
-					resource_inst.list_properties(self, dir.get_current_dir() + "/" + file_name, file_name)
+					resource_inst.list_properties(self, dir.get_current_dir().plus_file(file_name), file_name)
 					
 					filename_to_rindx[file_name] = resource_inst.get_index()
 			
@@ -165,6 +167,14 @@ func go_through_folder_for_update(dir, search, parent_ti=null):
 				var rindx = filename_to_rindx[file_name]
 				var resource = data_container.get_child(rindx)
 				resource.associated_treeitem = resource_file
+		
+		# ALTERNATIVELY, IF FILE IS CONFIG FILE
+		elif file_name == "config.cfg":
+			var cat_path = dir.get_current_dir().trim_prefix(DATA_DIR)
+			if !cat_path in cat_config.keys():
+				var config = ConfigFile.new()
+				config.load(dir.get_current_dir().plus_file(file_name))
+				cat_config[cat_path] = config
 		
 		file_name = dir.get_next()
 		
