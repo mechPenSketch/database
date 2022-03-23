@@ -11,6 +11,7 @@ func _enter_tree():
 	main_panel_instance = MainPanel.instance()
 	get_editor_interface().get_editor_viewport().add_child(main_panel_instance)
 	make_visible(false)
+	main_panel_instance.set_editor_plugin(self)
 	
 	tab_container = main_panel_instance.get_node("VBoxContainer/HSplitContainer/TabContainer")
 			
@@ -19,6 +20,8 @@ func _enter_tree():
 	# CONNECT NODES THAT CHANGES FILESYSTEM
 	main_panel_instance.connect("changing_filesystem", self, "_on_changing_filesystem")
 	get_editor_interface().get_resource_filesystem().connect("filesystem_changed", main_panel_instance, "_on_filesystem_changed")
+	
+	main_panel_instance.connect("gui_input", self, "_on_main_gui_input")
 
 func _exit_tree():
 	if main_panel_instance:
@@ -37,6 +40,14 @@ func _main_screen_changed(screen_name):
 
 func _on_changing_filesystem():
 	get_editor_interface().get_resource_filesystem().scan()
+
+func _on_main_gui_input(event:InputEvent):
+	if event is InputEventMouse:
+		var mouse_pos = event.get_position()
+		var viewport = get_editor_interface().get_parent().get_parent()
+		if viewport.gui_is_dragging():
+			var drag_data = get_editor_interface().get_file_system_dock().get_drag_data_fw(mouse_pos, get_editor_interface().get_file_system_dock().get_node("@@4109/@@4120"))
+			print(drag_data)
 
 func has_main_screen():
 	return true

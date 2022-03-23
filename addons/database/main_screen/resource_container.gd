@@ -11,10 +11,35 @@ var file_path
 const base_dir = "res://addons/database/property_editor/"
 const extension = ".tscn"
 
+var editor_plugin
+
+var current_dragdata
+
 var associated_treeitem
 var associated_resource
 var associated_script
 var has_unsaved_changes:bool setget set_unsaved_changes
+
+enum {OPT_NEW, OPT_NEWAS, OPT_LOAD, OPT_CAT, OPT_SHOWINFOLDER, OPT_SHOWINCAT}
+
+func _gui_input(event):
+	if event is InputEventMouseMotion:
+		if event.get_pressure() == 0 and current_dragdata:
+			set_dragdata_onto_props($VBoxContainer, null)
+			current_dragdata = null
+
+func can_drop_data(_p, data):
+	set_dragdata_onto_props($VBoxContainer, data)
+	current_dragdata = data
+	return false
+
+func set_dragdata_onto_props(node, data):
+	if node is DataPropertyEditor:
+		if node.has_node("OptionButton"):
+			node.get_node("OptionButton").set_dragdata(data)
+	else:
+		for c in node.get_children():
+			set_dragdata_onto_props(c, data)
 
 func list_properties(c, fp:String, fn):
 	parent_category = c
@@ -37,6 +62,7 @@ func list_properties(c, fp:String, fn):
 			pe_inst.tree_index = index.duplicate()
 			$VBoxContainer/GridContainer.add_child(pe_inst)
 			index[1] += 1
+			pe_inst.set_editor_plugin(editor_plugin)
 			
 			# VALUE
 			var value = associated_resource.get(pl["name"])
@@ -92,6 +118,23 @@ func _on_value_changed(value, tree_index):
 	if value != node.prev_val:
 		set_unsaved_changes(true)
 
+func _on_option_pressed(index:int, tree_index):
+	var node = $VBoxContainer
+	for i in tree_index:
+		node = node.get_child(i)
+	
+	var id = node.get_item_id(index)
+	
+	match id:
+		OPT_NEW:
+			print("New res")
+		OPT_NEWAS:
+			print("New res As...")
+		OPT_LOAD:
+			print("Open Filesystem")
+		OPT_CAT:
+			print("Pick a Category")
+
 func save_resource():
 	if associated_treeitem:
 		ResourceSaver.save(file_path, associated_resource)
@@ -117,18 +160,18 @@ func set_unsaved_changes(value:bool):
 func setup_resource_options(option_btn:OptionButton):
 	var popup:PopupMenu = option_btn.get_popup()
 	
-	popup.add_item("New Resource")
-	popup.add_item("New Class as...")
+	popup.add_item("New Resource", OPT_NEW)
+	popup.add_item("New Class as...", OPT_NEWAS)
 	
 	popup.add_separator()
 	
-	popup.add_item("Quick Load")
-	popup.add_item("Load")
-	popup.add_item("Edit")
-	popup.add_item("Clear")
-	popup.add_item("Save")
+	popup.add_item("Load", OPT_LOAD)
+	popup.add_item("Limit to Category", OPT_CAT)
 	
 	popup.add_separator()
 	
 	popup.add_item("Show in Filesystem")
 	popup.add_item("Show in Datasystem")
+
+func set_editor_plugin(node):
+	editor_plugin = node

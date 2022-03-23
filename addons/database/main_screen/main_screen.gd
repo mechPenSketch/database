@@ -1,6 +1,8 @@
 tool
 extends MarginContainer
 
+var editor_plugin
+
 onready var data_container = $VBoxContainer/HSplitContainer/TabContainer
 onready var tree_list = $VBoxContainer/HSplitContainer/VBoxContainer/Tree
 
@@ -158,6 +160,7 @@ func go_through_folder_for_update(dir, search, parent_ti=null):
 				# IF HAVEN'T ALREADY, ADD NEW TAB
 				if not file_name in filename_to_rindx.keys():
 					var resource_inst = ResourceContainer.instance()
+					resource_inst.set_editor_plugin(editor_plugin)
 					data_container.add_child(resource_inst)
 					resource_inst.list_properties(self, dir.get_current_dir().plus_file(file_name), file_name)
 					
@@ -179,3 +182,6 @@ func go_through_folder_for_update(dir, search, parent_ti=null):
 		file_name = dir.get_next()
 		
 	dir.list_dir_end()
+
+func set_editor_plugin(node):
+	editor_plugin = node

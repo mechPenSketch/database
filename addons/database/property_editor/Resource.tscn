@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://addons/database/property_editor/Base.tscn" type="PackedScene" id=1]
-[ext_resource path="res://addons/database/icons/Folder.svg" type="Texture" id=2]
+[ext_resource path="res://addons/database/property_editor/res_options.gd" type="Script" id=2]
 
 [node name="HBoxContainer" instance=ExtResource( 1 )]
 
@@ -13,8 +13,8 @@ margin_left = 514.0
 margin_right = 1024.0
 margin_bottom = 600.0
 size_flags_horizontal = 3
-disabled = true
 toggle_mode = false
 text = "New Resource"
-items = [ "New Resource", null, false, 0, null, "Load", ExtResource( 2 ), false, 1, null ]
-selected = 0
+script = ExtResource( 2 )
+
+[connection signal="editor_plugin_is_set" from="." to="OptionButton" method="_editor_plugin_is_set"]
