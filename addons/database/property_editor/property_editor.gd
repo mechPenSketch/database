@@ -7,6 +7,7 @@ var property_name:String
 var file_name:String
 var tree_index = []
 
+var resource_container
 var editor_plugin
 signal editor_plugin_is_set
 

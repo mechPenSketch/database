@@ -162,7 +162,7 @@ func go_through_folder_for_update(dir, search, parent_ti=null):
 					var resource_inst = ResourceContainer.instance()
 					resource_inst.set_editor_plugin(editor_plugin)
 					data_container.add_child(resource_inst)
-					resource_inst.list_properties(self, dir.get_current_dir().plus_file(file_name), file_name)
+					resource_inst.list_properties(self, dir.get_current_dir(), file_name)
 					
 					filename_to_rindx[file_name] = resource_inst.get_index()
 			

@@ -7,6 +7,7 @@ extends ScrollContainer
 var parent_category
 var file_name
 var file_path
+var category_folder
 
 const base_dir = "res://addons/database/property_editor/"
 const extension = ".tscn"
@@ -28,6 +29,18 @@ func _gui_input(event):
 			set_dragdata_onto_props($VBoxContainer, null)
 			current_dragdata = null
 
+func augment_config(property_name, target_folder):
+	#print(category_folder)
+	var config = ConfigFile.new()
+	
+	var config_path = category_folder.plus_file("config.cfg")
+	config.load(config_path)
+	
+	config.set_value("Properties", property_name, target_folder)
+	
+	config.save(config_path)
+	editor_plugin._on_changing_filesystem()
+
 func can_drop_data(_p, data):
 	set_dragdata_onto_props($VBoxContainer, data)
 	current_dragdata = data
@@ -41,10 +54,11 @@ func set_dragdata_onto_props(node, data):
 		for c in node.get_children():
 			set_dragdata_onto_props(c, data)
 
-func list_properties(c, fp:String, fn):
+func list_properties(c, cf:String, fn):
 	parent_category = c
-	file_path = fp
+	file_path = cf.plus_file(fn)
 	file_name = fn
+	category_folder = cf
 	var index = [0, 0]
 	
 	associated_resource = ResourceLoader.load(file_path)
@@ -62,6 +76,7 @@ func list_properties(c, fp:String, fn):
 			pe_inst.tree_index = index.duplicate()
 			$VBoxContainer/GridContainer.add_child(pe_inst)
 			index[1] += 1
+			pe_inst.resource_container = self
 			pe_inst.set_editor_plugin(editor_plugin)
 			
 			# VALUE
