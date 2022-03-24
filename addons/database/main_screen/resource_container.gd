@@ -14,14 +14,15 @@ const extension = ".tscn"
 var main_screen
 var editor_plugin
 
+var properties_by_name = {}
+
 var current_dragdata
+const PROPERTIES_SECTION = "Properties"
 
 var associated_treeitem
 var associated_resource
 var associated_script
 var has_unsaved_changes:bool setget set_unsaved_changes
-
-enum {OPT_NEW, OPT_NEWAS, OPT_LOAD, OPT_CAT, OPT_SHOWINFOLDER, OPT_SHOWINCAT}
 
 func _gui_input(event):
 	if event is InputEventMouseMotion:
@@ -33,11 +34,11 @@ func augment_config(property_name, target_folder):
 	#print(category_folder)
 	var config = main_screen.cat_config[category_folder]
 	
-	config.set_value("Properties", property_name, target_folder)
+	config.set_value(PROPERTIES_SECTION, property_name, target_folder)
 	
 	var config_path = category_folder.plus_file("config.cfg")
 	config.save(config_path)
-	editor_plugin._on_changing_filesystem()
+	# .cfg FILES ARE NOT RECORDED IN FILESYSTEM
 
 func can_drop_data(_p, data):
 	set_dragdata_onto_props($VBoxContainer, data)
@@ -77,6 +78,8 @@ func list_properties(c, cf:String, fn):
 			pe_inst.resource_container = self
 			pe_inst.set_editor_plugin(editor_plugin)
 			
+			properties_by_name[pe_inst.property_name] = pe_inst
+			
 			# VALUE
 			var value = associated_resource.get(pl["name"])
 			pe_inst.prev_val = value
@@ -101,7 +104,7 @@ func list_properties(c, cf:String, fn):
 						line_edit.set_text(value)
 				"Resource":
 					var option_btn = pe_inst.get_node("OptionButton")
-					setup_resource_options(option_btn)
+					option_btn.setup_default_options()
 					
 					if value:
 						option_btn.set_text(value.get_name())
@@ -130,7 +133,7 @@ func _on_value_changed(value, tree_index):
 	
 	if value != node.prev_val:
 		set_unsaved_changes(true)
-
+"""
 func _on_option_pressed(index:int, tree_index):
 	var node = $VBoxContainer
 	for i in tree_index:
@@ -147,7 +150,7 @@ func _on_option_pressed(index:int, tree_index):
 			print("Open Filesystem")
 		OPT_CAT:
 			print("Pick a Category")
-
+"""
 func save_resource():
 	if associated_treeitem:
 		ResourceSaver.save(file_path, associated_resource)
@@ -170,21 +173,14 @@ func set_unsaved_changes(value:bool):
 	
 	associated_treeitem.set_text(0, new_text)
 
-func setup_resource_options(option_btn:OptionButton):
-	var popup:PopupMenu = option_btn.get_popup()
-	
-	popup.add_item("New Resource", OPT_NEW)
-	popup.add_item("New Class as...", OPT_NEWAS)
-	
-	popup.add_separator()
-	
-	popup.add_item("Load", OPT_LOAD)
-	popup.add_item("Limit to Category", OPT_CAT)
-	
-	popup.add_separator()
-	
-	popup.add_item("Show in Filesystem")
-	popup.add_item("Show in Datasystem")
-
 func set_editor_plugin(node):
 	editor_plugin = node
+
+func update_property_options():
+	var config_by_cat = main_screen.cat_config
+	if category_folder in config_by_cat.keys():
+		var config = config_by_cat[category_folder]
+		var properties = config.get_section_keys(PROPERTIES_SECTION)
+		for p in properties:
+			var val = config.get_value(PROPERTIES_SECTION, p, "res://")
+			properties_by_name[p].get_node("OptionButton").change_options(val)

@@ -110,6 +110,8 @@ func update_tree(search:String = ""):
 			# GO THROUGH DIRECTORY
 			main_dir.list_dir_begin(true, false)
 			go_through_folder_for_update(main_dir, search,  tree_list.create_item())
+			for c in data_container.get_children():
+				c.update_property_options()
 		ERR_INVALID_PARAMETER:
 			print("missing data folder")
 		_:

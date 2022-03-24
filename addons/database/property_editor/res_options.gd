@@ -5,6 +5,8 @@ var editor_plugin
 
 var drag_data
 
+enum {OPT_NEW, OPT_NEWAS, OPT_LOAD, OPT_CAT, OPT_SHOWINFOLDER, OPT_SHOWINCAT}
+
 func _draw():
 	if is_compatable_with_drag():
 		var rect2_pos = get_parent().get_parent().get_position()
@@ -17,6 +19,12 @@ func _editor_plugin_is_set():
 
 func can_drop_data(_p, _d):
 	return is_compatable_with_drag()
+
+func change_options(dir):
+	get_popup().clear()
+	
+	if dir == "res://":
+		setup_default_options()
 
 func drop_data(_p, data):
 	#print(data)
@@ -39,3 +47,19 @@ func is_compatable_with_drag():
 func set_dragdata(data):
 	drag_data = data
 	update()
+
+func setup_default_options():
+	var popup:PopupMenu = get_popup()
+	
+	popup.add_item("New Resource", OPT_NEW)
+	popup.add_item("New Class as...", OPT_NEWAS)
+	
+	popup.add_separator()
+	
+	popup.add_item("Load", OPT_LOAD)
+	popup.add_item("Limit to Category", OPT_CAT)
+	
+	popup.add_separator()
+	
+	popup.add_item("Show in Filesystem")
+	popup.add_item("Show in Datasystem")
