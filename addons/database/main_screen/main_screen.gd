@@ -173,7 +173,7 @@ func go_through_folder_for_update(dir, search, parent_ti=null):
 		
 		# ALTERNATIVELY, IF FILE IS CONFIG FILE
 		elif file_name == "config.cfg":
-			var cat_path = dir.get_current_dir().trim_prefix(DATA_DIR)
+			var cat_path = dir.get_current_dir()
 			if !cat_path in cat_config.keys():
 				var config = ConfigFile.new()
 				config.load(dir.get_current_dir().plus_file(file_name))

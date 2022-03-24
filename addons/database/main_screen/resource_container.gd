@@ -4,7 +4,6 @@ extends ScrollContainer
 # COMPARING PROPERT INSPECTOR
 # 	@@3851 is the EditorInspector
 
-var parent_category
 var file_name
 var file_path
 var category_folder
@@ -12,6 +11,7 @@ var category_folder
 const base_dir = "res://addons/database/property_editor/"
 const extension = ".tscn"
 
+var main_screen
 var editor_plugin
 
 var current_dragdata
@@ -31,13 +31,11 @@ func _gui_input(event):
 
 func augment_config(property_name, target_folder):
 	#print(category_folder)
-	var config = ConfigFile.new()
-	
-	var config_path = category_folder.plus_file("config.cfg")
-	config.load(config_path)
+	var config = main_screen.cat_config[category_folder]
 	
 	config.set_value("Properties", property_name, target_folder)
 	
+	var config_path = category_folder.plus_file("config.cfg")
 	config.save(config_path)
 	editor_plugin._on_changing_filesystem()
 
@@ -55,7 +53,7 @@ func set_dragdata_onto_props(node, data):
 			set_dragdata_onto_props(c, data)
 
 func list_properties(c, cf:String, fn):
-	parent_category = c
+	main_screen = c
 	file_path = cf.plus_file(fn)
 	file_name = fn
 	category_folder = cf
