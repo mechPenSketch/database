@@ -107,9 +107,12 @@ func list_properties(c, cf:String, fn):
 					option_btn.setup_default_options()
 					
 					if value:
-						option_btn.set_text(value.get_name())
+						var res_name = value.get_path().rsplit("/")[-1]
+						option_btn.set_text(res_name)
 					else:
 						option_btn.set_text("[empty]")
+						
+					option_btn.connect("resource_is_set", self, "_on_property_resource_set")
 
 func get_pe_by_type(property):
 	match property["type"]:
@@ -124,6 +127,14 @@ func get_pe_by_type(property):
 		_:
 			return "String"
 
+func _on_property_resource_set(node, res_path):
+	var value = ResourceLoader.load(res_path)
+	
+	associated_resource.set(node.property_name, value)
+	
+	if value != node.prev_val:
+		set_unsaved_changes(true)
+
 func _on_value_changed(value, tree_index):
 	var node = $VBoxContainer
 	for i in tree_index:
@@ -133,24 +144,7 @@ func _on_value_changed(value, tree_index):
 	
 	if value != node.prev_val:
 		set_unsaved_changes(true)
-"""
-func _on_option_pressed(index:int, tree_index):
-	var node = $VBoxContainer
-	for i in tree_index:
-		node = node.get_child(i)
-	
-	var id = node.get_item_id(index)
-	
-	match id:
-		OPT_NEW:
-			print("New res")
-		OPT_NEWAS:
-			print("New res As...")
-		OPT_LOAD:
-			print("Open Filesystem")
-		OPT_CAT:
-			print("Pick a Category")
-"""
+
 func save_resource():
 	if associated_treeitem:
 		ResourceSaver.save(file_path, associated_resource)

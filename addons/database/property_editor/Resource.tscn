@@ -18,3 +18,4 @@ text = "New Resource"
 script = ExtResource( 2 )
 
 [connection signal="editor_plugin_is_set" from="." to="OptionButton" method="_editor_plugin_is_set"]
+[connection signal="item_selected" from="OptionButton" to="OptionButton" method="_item_selected"]
