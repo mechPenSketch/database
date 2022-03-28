@@ -4,10 +4,12 @@ extends OptionButton
 var editor_plugin
 
 var drag_data
+var class_hint
 
 var category_folder
 enum {OPT_NEW, OPT_NEWAS, OPT_LOAD, OPT_INSTALOAD, OPT_CAT, OPT_SHOWINFOLDER, OPT_SHOWINCAT}
 
+const RES_EXTS = ["res", "tres"]
 signal resource_is_set
 
 func _draw():
@@ -58,6 +60,16 @@ func change_options(dir):
 			_:
 				print(err)
 
+func drop_data(_p, data):
+	#print(data)
+	match data["type"]:
+		"files_and_dirs":
+			get_parent().resource_container.augment_config(get_property_name(), data["files"][0])
+		"files":
+			print(data["files"][0])
+			set_text(data["files"][0].get_file())
+			emit_signal("resource_is_set", get_parent(), data["files"][0])
+
 func go_through_folder_for_options(dir:Directory, base_folder:String = ""):
 	dir.list_dir_begin(true, false)
 	var file_name = dir.get_next()
@@ -73,7 +85,7 @@ func go_through_folder_for_options(dir:Directory, base_folder:String = ""):
 			go_through_folder_for_options(sub_directory, folder)
 		
 		# ELSE, IF ITEM IS A FILE
-		elif ".tres" in file_name or ".res" in file_name:
+		elif file_name.get_extension() in RES_EXTS:
 			var final_filename = file_name
 			if base_folder:
 				final_filename = base_folder.plus_file(file_name)
@@ -83,22 +95,31 @@ func go_through_folder_for_options(dir:Directory, base_folder:String = ""):
 		
 	dir.list_dir_end()
 
-func drop_data(_p, data):
-	#print(data)
-	match data["type"]:
-		"files_and_dirs":
-			#print("Set category")
-			#print(data["files"][0])
-			get_parent().resource_container.augment_config(get_property_name(), data["files"][0])
-
 func get_property_name():
 	return get_parent().property_name
 
 func is_compatable_with_drag():
 	#print(drag_data)
 	if drag_data:
-		if drag_data["type"] == "files_and_dirs":
-			return true
+		match drag_data["type"]:
+			"files_and_dirs":
+				return true
+			"files":
+				return is_compatable_with_file(drag_data["files"][0])
+			
+	return false
+
+func is_compatable_with_file(file):
+	var extension = file.get_extension()
+	
+	match class_hint:
+		"Texture":
+			if extension in ["png", "jpeg", "svg"]:
+				return true
+		_:
+			if extension in RES_EXTS:
+				return true
+		
 	return false
 
 func set_dragdata(data):
