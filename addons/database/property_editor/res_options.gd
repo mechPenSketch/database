@@ -2,12 +2,13 @@ tool
 extends OptionButton
 
 var editor_plugin
+var main_screen
+var resource_options
 
 var drag_data
 var class_hint
 
 var category_folder
-enum {OPT_NEW, OPT_NEWAS, OPT_LOAD, OPT_INSTALOAD, OPT_CAT, OPT_SHOWINFOLDER, OPT_SHOWINCAT}
 
 const RES_EXTS = ["res", "tres"]
 signal resource_is_set
@@ -21,23 +22,31 @@ func _draw():
 
 func _editor_plugin_is_set():
 	editor_plugin = get_parent().editor_plugin
+	main_screen = editor_plugin.main_panel_instance
+	resource_options = main_screen.resource_options
+
+func _gui_input(event):
+	if event is InputEventMouseButton and event.get_button_index() == BUTTON_RIGHT and event.is_pressed():
+		var mouse_pos = event.get_global_position()
+		
+		resource_options.popup(Rect2(mouse_pos, resource_options.get_size()))
 
 func _item_selected(index:int):
 	var id = get_item_id(index)
 	
 	match id:
-		OPT_NEW:
+		main_screen.OPT_NEW:
 			print("New res")
-		OPT_NEWAS:
+		main_screen.OPT_NEWAS:
 			print("New res As...")
-		OPT_LOAD:
+		main_screen.OPT_LOAD:
 			print("Open Filesystem")
-		OPT_INSTALOAD:
+		main_screen.OPT_INSTALOAD:
 			#SETTING A RESOURCE
 			var file_name = get_item_text(index)
 			var full_path = category_folder.plus_file(file_name)
 			emit_signal("resource_is_set", get_parent(), full_path)
-		OPT_CAT:
+		main_screen.OPT_CAT:
 			print("Pick a Category")
 
 func can_drop_data(_p, _d):
@@ -50,7 +59,10 @@ func change_options(dir):
 	
 	if dir == "res://":
 		setup_default_options()
+		get_popup().set_allow_search(false)
 	else:
+		get_popup().set_allow_search(true)
+		
 		var main_dir = Directory.new()
 		var err = main_dir.open(dir)
 		
@@ -64,7 +76,7 @@ func drop_data(_p, data):
 	#print(data)
 	match data["type"]:
 		"files_and_dirs":
-			get_parent().resource_container.augment_config(get_property_name(), data["files"][0])
+			get_parent().main_screen.augment_config(get_property_name(), data["files"][0])
 		"files":
 			print(data["files"][0])
 			set_text(data["files"][0].get_file())
@@ -89,7 +101,7 @@ func go_through_folder_for_options(dir:Directory, base_folder:String = ""):
 			var final_filename = file_name
 			if base_folder:
 				final_filename = base_folder.plus_file(file_name)
-			get_popup().add_item(final_filename, OPT_INSTALOAD)
+			get_popup().add_item(final_filename, main_screen.OPT_INSTALOAD)
 		
 		file_name = dir.get_next()
 		
@@ -129,15 +141,10 @@ func set_dragdata(data):
 func setup_default_options():
 	var popup:PopupMenu = get_popup()
 	
-	popup.add_item("New Resource", OPT_NEW)
-	popup.add_item("New Class as...", OPT_NEWAS)
+	popup.add_item("New Resource", main_screen.OPT_NEW)
+	popup.add_item("New Class as...", main_screen.OPT_NEWAS)
+	popup.add_item("Load", main_screen.OPT_LOAD)
 	
 	popup.add_separator()
 	
-	popup.add_item("Load", OPT_LOAD)
-	popup.add_item("Limit to Category", OPT_CAT)
-	
-	popup.add_separator()
-	
-	popup.add_item("Show in Filesystem")
-	popup.add_item("Show in Datasystem")
+	main_screen.add_options_to_popup(popup)

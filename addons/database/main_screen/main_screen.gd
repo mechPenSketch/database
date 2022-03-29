@@ -22,6 +22,9 @@ signal changing_filesystem
 
 var cat_config = {}
 
+onready var resource_options = $ResourceOptions
+enum {OPT_NEW, OPT_NEWAS, OPT_LOAD, OPT_INSTALOAD, OPT_CAT, OPT_EDIT, OPT_CLEAR, OPT_SHOWINFOLDER, OPT_SHOWINCAT}
+
 func _newcat_pressed():
 	$NewCategory.popup_centered()
 	
@@ -93,6 +96,20 @@ func _on_item_selected():
 
 func _on_search_changed(new_text):
 	update_tree(new_text)
+
+func _ready():
+	add_options_to_popup(resource_options)
+	resource_options.set_as_minsize()
+
+func add_options_to_popup(popup):
+	popup.add_item("Limit to Category", OPT_CAT)
+	popup.add_item("Edit", OPT_EDIT)
+	popup.add_item("Clear", OPT_CLEAR)
+	
+	popup.add_separator()
+	
+	popup.add_item("Show in Filesystem")
+	popup.add_item("Show in Datasystem")
 
 func update_tree(search:String = ""):
 	# UNLINK TREE ITEM FROM RESOURCES
