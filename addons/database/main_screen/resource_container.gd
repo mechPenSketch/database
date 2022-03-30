@@ -110,7 +110,7 @@ func list_properties(c, cf:String, fn):
 						var res_name = value.get_path().rsplit("/")[-1]
 						option_btn.set_text(res_name)
 					else:
-						option_btn.set_text("[empty]")
+						option_btn.set_text(option_btn.NULL_VALUE_TEXT)
 					
 					option_btn.class_hint = pl["class_name"]
 					

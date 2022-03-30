@@ -8,8 +8,8 @@ onready var tree_list = $VBoxContainer/HSplitContainer/VBoxContainer/Tree
 
 const DATA_DIR = "res://data"
 
-export(Texture) var icon_folder
-export(Texture) var icon_resource
+var icon_folder
+var icon_resource
 
 const ResourceContainer = preload("Resource.tscn")
 var filename_to_rindx = {} # RINDX: RESOURCE (CHILD) INDEX
@@ -100,7 +100,6 @@ func _on_search_changed(new_text):
 func add_options_to_popup(popup):
 	var editor_control = editor_plugin.get_editor_interface().get_base_control()
 	
-	var icon_folder = editor_control.get_icon("Folder", "EditorIcons")
 	popup.add_icon_item(icon_folder, "Limit to Category", OPT_CAT)
 	var icon_edit = editor_control.get_icon("Edit", "EditorIcons")
 	popup.add_icon_item(icon_edit, "Edit", OPT_EDIT)
@@ -205,6 +204,15 @@ func go_through_folder_for_update(dir, search, parent_ti=null):
 
 func set_editor_plugin(node):
 	editor_plugin = node
+	
+	# ICONS
+	var editor_control = editor_plugin.get_editor_interface().get_base_control()
+	#	SEARCH
+	$VBoxContainer/HSplitContainer/VBoxContainer/Search.set_right_icon(editor_control.get_icon("Search", "EditorIcons"))
+	
+	#	FOLDERS AND RESOURCES
+	icon_folder = editor_control.get_icon("Folder", "EditorIcons")
+	icon_resource = editor_control.get_icon("ResourcePreloader", "EditorIcons")
 	
 	# USING EDITOR PLUGIN TO ADD ONTO RESOURCE OPTIONS
 	add_options_to_popup(resource_options)

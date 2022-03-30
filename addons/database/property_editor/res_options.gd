@@ -1,6 +1,8 @@
 tool
 extends OptionButton
 
+const NULL_VALUE_TEXT = "[empty]"
+
 var editor_plugin
 var main_screen
 var resource_options
@@ -107,6 +109,15 @@ func go_through_folder_for_options(dir:Directory, base_folder:String = ""):
 		
 	dir.list_dir_end()
 
+func get_icon_name(cn)->String:
+	match cn:
+		"Resource":
+			return "ResourcePreloader"
+		"Texture":
+			return "Image"
+		_:
+			return cn
+
 func get_property_name():
 	return get_parent().property_name
 
@@ -142,7 +153,7 @@ func setup_default_options():
 	var popup:PopupMenu = get_popup()
 	var editor_control = editor_plugin.get_editor_interface().get_base_control()
 	
-	var icon_class = editor_control.get_icon(class_hint, "EditorIcons")
+	var icon_class = editor_control.get_icon(get_icon_name(class_hint), "EditorIcons")
 	popup.add_icon_item(icon_class, "New Resource", main_screen.OPT_NEW)
 	popup.add_icon_item(icon_class, "New Class as...", main_screen.OPT_NEWAS)
 	var icon_load = editor_control.get_icon("Load", "EditorIcons")
