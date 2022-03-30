@@ -97,14 +97,15 @@ func _on_item_selected():
 func _on_search_changed(new_text):
 	update_tree(new_text)
 
-func _ready():
-	add_options_to_popup(resource_options)
-	resource_options.set_as_minsize()
-
 func add_options_to_popup(popup):
-	popup.add_item("Limit to Category", OPT_CAT)
-	popup.add_item("Edit", OPT_EDIT)
-	popup.add_item("Clear", OPT_CLEAR)
+	var editor_control = editor_plugin.get_editor_interface().get_base_control()
+	
+	var icon_folder = editor_control.get_icon("Folder", "EditorIcons")
+	popup.add_icon_item(icon_folder, "Limit to Category", OPT_CAT)
+	var icon_edit = editor_control.get_icon("Edit", "EditorIcons")
+	popup.add_icon_item(icon_edit, "Edit", OPT_EDIT)
+	var icon_clear = editor_control.get_icon("Clear", "EditorIcons")
+	popup.add_icon_item(icon_clear, "Clear", OPT_CLEAR)
 	
 	popup.add_separator()
 	
@@ -204,3 +205,7 @@ func go_through_folder_for_update(dir, search, parent_ti=null):
 
 func set_editor_plugin(node):
 	editor_plugin = node
+	
+	# USING EDITOR PLUGIN TO ADD ONTO RESOURCE OPTIONS
+	add_options_to_popup(resource_options)
+	resource_options.set_as_minsize()

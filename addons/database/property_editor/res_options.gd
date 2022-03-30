@@ -6,7 +6,7 @@ var main_screen
 var resource_options
 
 var drag_data
-var class_hint
+var class_hint = "Resource"
 
 var category_folder
 
@@ -140,10 +140,13 @@ func set_dragdata(data):
 
 func setup_default_options():
 	var popup:PopupMenu = get_popup()
+	var editor_control = editor_plugin.get_editor_interface().get_base_control()
 	
-	popup.add_item("New Resource", main_screen.OPT_NEW)
-	popup.add_item("New Class as...", main_screen.OPT_NEWAS)
-	popup.add_item("Load", main_screen.OPT_LOAD)
+	var icon_class = editor_control.get_icon(class_hint, "EditorIcons")
+	popup.add_icon_item(icon_class, "New Resource", main_screen.OPT_NEW)
+	popup.add_icon_item(icon_class, "New Class as...", main_screen.OPT_NEWAS)
+	var icon_load = editor_control.get_icon("Load", "EditorIcons")
+	popup.add_icon_item(icon_load, "Load", main_screen.OPT_LOAD)
 	
 	popup.add_separator()
 	
