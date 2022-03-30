@@ -5,6 +5,7 @@ const NULL_VALUE_TEXT = "[empty]"
 
 var editor_plugin
 var main_screen
+var empty_options
 var resource_options
 
 var drag_data
@@ -25,13 +26,16 @@ func _draw():
 func _editor_plugin_is_set():
 	editor_plugin = get_parent().editor_plugin
 	main_screen = editor_plugin.main_panel_instance
+	empty_options = main_screen.empty_options
 	resource_options = main_screen.resource_options
 
 func _gui_input(event):
 	if event is InputEventMouseButton and event.get_button_index() == BUTTON_RIGHT and event.is_pressed():
 		var mouse_pos = event.get_global_position()
 		
-		resource_options.popup(Rect2(mouse_pos, resource_options.get_size()))
+		var options = empty_options if get_text() == NULL_VALUE_TEXT else resource_options
+		
+		options.popup(Rect2(mouse_pos, options.get_size()))
 
 func _item_selected(index:int):
 	var id = get_item_id(index)

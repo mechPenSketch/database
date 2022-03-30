@@ -173,6 +173,11 @@ size_flags_vertical = 4
 window_title = "Warning!"
 dialog_text = "Duplicate file/folder."
 
+[node name="EmptyResourceOptions" type="PopupMenu" parent="."]
+margin_left = 5.0
+margin_right = 1019.0
+margin_bottom = 595.0
+
 [node name="ResourceOptions" type="PopupMenu" parent="."]
 margin_left = 5.0
 margin_right = 1019.0
