@@ -130,7 +130,7 @@ func get_pe_by_type(property):
 			return "String"
 
 func _on_property_resource_set(node, res_path):
-	var value = ResourceLoader.load(res_path)
+	var value = null if !res_path else ResourceLoader.load(res_path)
 	
 	associated_resource.set(node.property_name, value)
 	

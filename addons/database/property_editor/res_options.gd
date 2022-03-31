@@ -47,7 +47,8 @@ func _item_selected(index:int):
 		var full_path = category_folder.plus_file(file_name)
 		emit_signal("resource_is_set", get_parent(), full_path)
 	else:
-		item_id_effect(id)
+		main_screen.item_id_effect(self, id)
+		reset_text()
 
 func can_drop_data(_p, _d):
 	return is_compatable_with_drag()
@@ -72,13 +73,16 @@ func change_options(dir):
 			_:
 				print(err)
 
+func clear_value():
+	set_text(NULL_VALUE_TEXT)
+	emit_signal("resource_is_set", get_parent(), "")
+
 func drop_data(_p, data):
 	#print(data)
 	match data["type"]:
 		"files_and_dirs":
 			get_parent().main_screen.augment_config(get_property_name(), data["files"][0])
 		"files":
-			print(data["files"][0])
 			set_text(data["files"][0].get_file())
 			emit_signal("resource_is_set", get_parent(), data["files"][0])
 
@@ -142,17 +146,18 @@ func is_compatable_with_file(file):
 				return true
 		
 	return false
+
+func reset_text():
+	var final_text
 	
-func item_id_effect(id):
-	match id:
-		main_screen.OPT_NEW:
-			print("New res")
-		main_screen.OPT_NEWAS:
-			print("New res As...")
-		main_screen.OPT_LOAD:
-			print("Open Filesystem")
-		main_screen.OPT_CAT:
-			print("Pick a Category")
+	var value = get_parent().resource_container.get(get_parent().property_name)
+	if value:
+		final_text = value.get_path().rsplit("/")[-1]
+	else:
+		final_text = NULL_VALUE_TEXT
+	
+	set_button_icon(null)
+	set_text(final_text)
 
 func set_dragdata(data):
 	drag_data = data

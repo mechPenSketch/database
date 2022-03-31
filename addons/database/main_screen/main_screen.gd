@@ -28,7 +28,7 @@ onready var resource_options = $ResourceOptions
 enum {OPT_NEW, OPT_NEWAS, OPT_LOAD, OPT_INSTALOAD, OPT_CAT, OPT_EDIT, OPT_CLEAR, OPT_SHOWINFOLDER, OPT_SHOWINCAT}
 
 func _option_pressed_by_id(id):
-	selected_resoptions.item_id_effect(id)
+	item_id_effect(selected_resoptions, id)
 
 func _newcat_pressed():
 	$NewCategory.popup_centered()
@@ -207,6 +207,21 @@ func go_through_folder_for_update(dir, search, parent_ti=null):
 		file_name = dir.get_next()
 		
 	dir.list_dir_end()
+	
+func item_id_effect(options_node, id):
+	match id:
+		OPT_NEW:
+			print("New res")
+		OPT_NEWAS:
+			print("New res As...")
+		OPT_LOAD:
+			print("Open Filesystem")
+		OPT_CAT:
+			print("Pick a Category")
+		OPT_EDIT:
+			print("Goto res")
+		OPT_CLEAR:
+			options_node.clear_value()
 
 func set_editor_plugin(node):
 	editor_plugin = node
