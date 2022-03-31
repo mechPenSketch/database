@@ -189,3 +189,5 @@ margin_bottom = 595.0
 [connection signal="item_selected" from="VBoxContainer/HSplitContainer/VBoxContainer/Tree" to="." method="_on_item_selected"]
 [connection signal="confirmed" from="NewCategory" to="." method="_newcat_confirmed"]
 [connection signal="confirmed" from="NewResource" to="." method="_newres_confirmed"]
+[connection signal="id_pressed" from="EmptyResourceOptions" to="." method="_option_pressed_by_id"]
+[connection signal="id_pressed" from="ResourceOptions" to="." method="_option_pressed_by_id"]

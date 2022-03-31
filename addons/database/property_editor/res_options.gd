@@ -33,6 +33,7 @@ func _gui_input(event):
 	if event is InputEventMouseButton and event.get_button_index() == BUTTON_RIGHT and event.is_pressed():
 		var mouse_pos = event.get_global_position()
 		
+		main_screen.selected_resoptions = self
 		var options = empty_options if get_text() == NULL_VALUE_TEXT else resource_options
 		
 		options.popup(Rect2(mouse_pos, options.get_size()))
@@ -40,20 +41,13 @@ func _gui_input(event):
 func _item_selected(index:int):
 	var id = get_item_id(index)
 	
-	match id:
-		main_screen.OPT_NEW:
-			print("New res")
-		main_screen.OPT_NEWAS:
-			print("New res As...")
-		main_screen.OPT_LOAD:
-			print("Open Filesystem")
-		main_screen.OPT_INSTALOAD:
-			#SETTING A RESOURCE
-			var file_name = get_item_text(index)
-			var full_path = category_folder.plus_file(file_name)
-			emit_signal("resource_is_set", get_parent(), full_path)
-		main_screen.OPT_CAT:
-			print("Pick a Category")
+	if id == main_screen.OPT_INSTALOAD:
+		#SETTING A RESOURCE
+		var file_name = get_item_text(index)
+		var full_path = category_folder.plus_file(file_name)
+		emit_signal("resource_is_set", get_parent(), full_path)
+	else:
+		item_id_effect(id)
 
 func can_drop_data(_p, _d):
 	return is_compatable_with_drag()
@@ -148,6 +142,17 @@ func is_compatable_with_file(file):
 				return true
 		
 	return false
+	
+func item_id_effect(id):
+	match id:
+		main_screen.OPT_NEW:
+			print("New res")
+		main_screen.OPT_NEWAS:
+			print("New res As...")
+		main_screen.OPT_LOAD:
+			print("Open Filesystem")
+		main_screen.OPT_CAT:
+			print("Pick a Category")
 
 func set_dragdata(data):
 	drag_data = data

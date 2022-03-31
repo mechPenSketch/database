@@ -22,9 +22,13 @@ signal changing_filesystem
 
 var cat_config = {}
 
+var selected_resoptions
 onready var empty_options = $EmptyResourceOptions
 onready var resource_options = $ResourceOptions
 enum {OPT_NEW, OPT_NEWAS, OPT_LOAD, OPT_INSTALOAD, OPT_CAT, OPT_EDIT, OPT_CLEAR, OPT_SHOWINFOLDER, OPT_SHOWINCAT}
+
+func _option_pressed_by_id(id):
+	selected_resoptions.item_id_effect(id)
 
 func _newcat_pressed():
 	$NewCategory.popup_centered()
