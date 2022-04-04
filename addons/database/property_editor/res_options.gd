@@ -7,6 +7,7 @@ var editor_plugin
 var main_screen
 var empty_options
 var resource_options
+var data_options
 
 var drag_data
 var class_hint = "Resource"
@@ -28,13 +29,22 @@ func _editor_plugin_is_set():
 	main_screen = editor_plugin.main_panel_instance
 	empty_options = main_screen.empty_options
 	resource_options = main_screen.resource_options
+	data_options = main_screen.data_options
 
 func _gui_input(event):
 	if event is InputEventMouseButton and event.get_button_index() == BUTTON_RIGHT and event.is_pressed():
 		var mouse_pos = event.get_global_position()
 		
 		main_screen.selected_resoptions = self
-		var options = empty_options if get_text() == NULL_VALUE_TEXT else resource_options
+		var options
+		if get_text() == NULL_VALUE_TEXT:
+			options = empty_options
+		else:
+			var value = get_parent().resource_container.associated_resource.get(get_parent().property_name)
+			if main_screen.DATA_DIR in category_folder:
+				options = data_options
+			else:
+				options = resource_options
 		
 		options.popup(Rect2(mouse_pos, options.get_size()))
 

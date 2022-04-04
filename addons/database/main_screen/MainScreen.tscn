@@ -183,6 +183,11 @@ margin_left = 5.0
 margin_right = 1019.0
 margin_bottom = 595.0
 
+[node name="DataResourceOptions" type="PopupMenu" parent="."]
+margin_left = 5.0
+margin_right = 1019.0
+margin_bottom = 595.0
+
 [connection signal="pressed" from="VBoxContainer/HBoxContainer/NewCategory" to="." method="_newcat_pressed"]
 [connection signal="pressed" from="VBoxContainer/HBoxContainer/NewResource" to="." method="_newres_pressed"]
 [connection signal="text_changed" from="VBoxContainer/HSplitContainer/VBoxContainer/Search" to="." method="_on_search_changed"]
@@ -191,3 +196,4 @@ margin_bottom = 595.0
 [connection signal="confirmed" from="NewResource" to="." method="_newres_confirmed"]
 [connection signal="id_pressed" from="EmptyResourceOptions" to="." method="_option_pressed_by_id"]
 [connection signal="id_pressed" from="ResourceOptions" to="." method="_option_pressed_by_id"]
+[connection signal="id_pressed" from="DataResourceOptions" to="." method="_option_pressed_by_id"]

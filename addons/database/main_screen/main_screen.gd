@@ -25,6 +25,7 @@ var cat_config = {}
 var selected_resoptions
 onready var empty_options = $EmptyResourceOptions
 onready var resource_options = $ResourceOptions
+onready var data_options = $DataResourceOptions
 enum {OPT_NEW, OPT_NEWAS, OPT_LOAD, OPT_INSTALOAD, OPT_CAT, OPT_EDIT, OPT_CLEAR, OPT_SHOWINFOLDER, OPT_SHOWINCAT}
 
 func _option_pressed_by_id(id):
@@ -102,7 +103,7 @@ func _on_item_selected():
 func _on_search_changed(new_text):
 	update_tree(new_text)
 
-func add_options_to_popup(popup, has_value=false):
+func add_options_to_popup(popup, has_value=false, value_is_in_cat=false):
 	var editor_control = editor_plugin.get_editor_interface().get_base_control()
 	
 	popup.add_icon_item(icon_folder, "Limit to Category", OPT_CAT)
@@ -115,7 +116,8 @@ func add_options_to_popup(popup, has_value=false):
 		popup.add_separator()
 		
 		popup.add_item("Show in Filesystem")
-		popup.add_item("Show in Datasystem")
+		if value_is_in_cat:
+			popup.add_item("Show in Datasystem")
 
 func update_tree(search:String = ""):
 	# UNLINK TREE ITEM FROM RESOURCES
@@ -240,3 +242,5 @@ func set_editor_plugin(node):
 	empty_options.set_as_minsize()
 	add_options_to_popup(resource_options, true)
 	resource_options.set_as_minsize()
+	add_options_to_popup(data_options, true, true)
+	data_options.set_as_minsize()
