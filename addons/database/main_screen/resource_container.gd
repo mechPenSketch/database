@@ -72,9 +72,26 @@ func list_properties(c, cf:String, fn):
 			var pe_inst = pe.instance()
 			pe_inst.set_property(pl)
 			pe_inst.file_name = pe_type
-			pe_inst.tree_index = index.duplicate()
-			$VBoxContainer/GridContainer.add_child(pe_inst)
-			index[1] += 1
+			
+			var vlist = $VBoxContainer
+			var gridlist = vlist.get_child(index[0])
+			# ADDING INSTANCE ONTO SCENETREE
+			if pe_inst is DataPropertyEditorWide:
+				pe_inst.tree_index = [index[0] + 1]
+				vlist.add_child(pe_inst)
+				
+				# ADD NEW GRIDLIST AFTER
+				if gridlist.get_child_count():
+					vlist.add_child(GridContainer.new())
+					index[0] += 2
+				else:
+					vlist.move_child(gridlist, gridlist.get_index() + 1)
+					index[0] += 1
+			else:
+				pe_inst.tree_index = index.duplicate()
+				gridlist.add_child(pe_inst)
+				index[1] += 1
+			
 			pe_inst.resource_container = self
 			pe_inst.set_editor_plugin(editor_plugin)
 			
@@ -102,6 +119,12 @@ func list_properties(c, cf:String, fn):
 					
 					if value:
 						line_edit.set_text(value)
+				"StringMultiline":
+					var text_edit = pe_inst.get_node("HBoxContainer/TextEdit")
+					text_edit.connect("text_changed", self, "_on_textedit_changed", [pe_inst.tree_index])
+					
+					if value:
+						text_edit.set_text(value)
 				"Resource":
 					var option_btn = pe_inst.get_node("OptionButton")
 					option_btn.setup_default_options()
@@ -127,10 +150,23 @@ func get_pe_by_type(property):
 		TYPE_OBJECT:
 			return "Resource"
 		_:
-			return "String"
+			match property["hint"]:
+				PROPERTY_HINT_MULTILINE_TEXT:
+					return "StringMultiline"
+				_:
+					return "String"
 
 func _on_property_resource_set(node, res_path):
 	var value = null if !res_path else ResourceLoader.load(res_path)
+	
+	associated_resource.set(node.property_name, value)
+	
+	if value != node.prev_val:
+		set_unsaved_changes(true)
+
+func _on_textedit_changed(tree_index):
+	var node = $VBoxContainer.get_child(tree_index[0])
+	var value = node.get_node("HBoxContainer/TextEdit").get_text()
 	
 	associated_resource.set(node.property_name, value)
 	

@@ -8,3 +8,4 @@ name = "Ban Nah"
 is_actually_a_veggie = false
 index = 0
 weight = 18.0
+flavor_text = ""

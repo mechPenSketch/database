@@ -8,3 +8,4 @@ name = "Applic Bicious"
 is_actually_a_veggie = false
 index = 0
 weight = 12.5
+flavor_text = ""
