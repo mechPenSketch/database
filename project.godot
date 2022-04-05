@@ -13,9 +13,15 @@ _global_script_classes=[ {
 "class": "DataPropertyEditor",
 "language": "GDScript",
 "path": "res://addons/database/property_editor/property_editor.gd"
+}, {
+"base": "VBoxContainer",
+"class": "DataPropertyEditorWide",
+"language": "GDScript",
+"path": "res://addons/database/property_editor/property_editor_wide.gd"
 } ]
 _global_script_class_icons={
-"DataPropertyEditor": ""
+"DataPropertyEditor": "",
+"DataPropertyEditorWide": ""
 }
 
 [application]
