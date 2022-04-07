@@ -2,6 +2,8 @@ tool
 extends MarginContainer
 
 var editor_plugin
+var editor_interface
+var filesystem_dock
 
 onready var data_container = $VBoxContainer/HSplitContainer/TabContainer
 onready var tree_list = $VBoxContainer/HSplitContainer/VBoxContainer/Tree
@@ -104,7 +106,7 @@ func _on_search_changed(new_text):
 	update_tree(new_text)
 
 func add_options_to_popup(popup, has_value=false, value_is_in_cat=false):
-	var editor_control = editor_plugin.get_editor_interface().get_base_control()
+	var editor_control = editor_interface.get_base_control()
 	
 	popup.add_icon_item(icon_folder, "Limit to Category", OPT_CAT)
 	if has_value:
@@ -115,9 +117,9 @@ func add_options_to_popup(popup, has_value=false, value_is_in_cat=false):
 		
 		popup.add_separator()
 		
-		popup.add_item("Show in Filesystem")
+		popup.add_item("Show in Filesystem", OPT_SHOWINFOLDER)
 		if value_is_in_cat:
-			popup.add_item("Show in Datasystem")
+			popup.add_item("Show in Datasystem", OPT_SHOWINCAT)
 
 func update_tree(search:String = ""):
 	# UNLINK TREE ITEM FROM RESOURCES
@@ -224,12 +226,19 @@ func item_id_effect(options_node, id):
 			print("Goto res")
 		OPT_CLEAR:
 			options_node.clear_value()
+		OPT_SHOWINFOLDER:
+			var filepath = options_node.category_folder.plus_file(options_node.get_text())
+			filesystem_dock.navigate_to_path(filepath)
+		OPT_SHOWINCAT:
+			print("Show in Category")
 
 func set_editor_plugin(node):
 	editor_plugin = node
+	editor_interface = editor_plugin.get_editor_interface()
+	filesystem_dock = editor_interface.get_file_system_dock()
 	
 	# ICONS
-	var editor_control = editor_plugin.get_editor_interface().get_base_control()
+	var editor_control = editor_interface.get_base_control()
 	#	SEARCH
 	$VBoxContainer/HSplitContainer/VBoxContainer/Search.set_right_icon(editor_control.get_icon("Search", "EditorIcons"))
 	
