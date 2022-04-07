@@ -98,6 +98,10 @@ func _on_filesystem_changed():
 func _on_item_selected():
 	var tree_item = tree_list.get_selected()
 	var selected_filename = tree_item.get_text(TICOL_FILENAME)
+	
+	if "(*)" in selected_filename:
+		selected_filename = selected_filename.trim_suffix("(*)")
+	
 	if selected_filename in filename_to_rindx.keys():
 		var resource_index = filename_to_rindx[selected_filename]
 		data_container.set_current_tab(resource_index)
