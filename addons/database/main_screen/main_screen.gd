@@ -109,7 +109,7 @@ func _on_item_selected():
 func _on_search_changed(new_text):
 	update_tree(new_text)
 
-func add_options_to_popup(popup, has_value=false, value_is_in_cat=false):
+func add_options_to_popup(popup, has_value=false):
 	var editor_control = editor_interface.get_base_control()
 	
 	popup.add_icon_item(icon_folder, "Limit to Category", OPT_CAT)
@@ -122,8 +122,6 @@ func add_options_to_popup(popup, has_value=false, value_is_in_cat=false):
 		popup.add_separator()
 		
 		popup.add_item("Show in Filesystem", OPT_SHOWINFOLDER)
-		if value_is_in_cat:
-			popup.add_item("Show in Datasystem", OPT_SHOWINCAT)
 
 func update_tree(search:String = ""):
 	# UNLINK TREE ITEM FROM RESOURCES
@@ -243,15 +241,16 @@ func item_id_effect(options_node, id):
 		OPT_CAT:
 			print("Pick a Category")
 		OPT_EDIT:
-			print("Goto res")
+			if DATA_DIR in options_node.category_folder and options_node.get_text().get_extension() in options_node.RES_EXTS:
+				var target_item = get_matched_tree_item(tree_list.get_root(), options_node.get_text())
+				target_item.select(TICOL_FILENAME)
+			else:
+				editor_interface.edit_resource(options_node.get_parent().resource_container.associated_resource.get(get_parent().property_name))
 		OPT_CLEAR:
 			options_node.clear_value()
 		OPT_SHOWINFOLDER:
 			var filepath = options_node.category_folder.plus_file(options_node.get_text())
 			filesystem_dock.navigate_to_path(filepath)
-		OPT_SHOWINCAT:
-			var target_item = get_matched_tree_item(tree_list.get_root(), options_node.get_text())
-			target_item.select(TICOL_FILENAME)
 
 func set_editor_plugin(node):
 	editor_plugin = node
@@ -272,5 +271,5 @@ func set_editor_plugin(node):
 	empty_options.set_as_minsize()
 	add_options_to_popup(resource_options, true)
 	resource_options.set_as_minsize()
-	add_options_to_popup(data_options, true, true)
+	add_options_to_popup(data_options, true)
 	data_options.set_as_minsize()
