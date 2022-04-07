@@ -148,6 +148,22 @@ func update_tree(search:String = ""):
 		_:
 			print(open_error)
 
+func get_matched_tree_item(treeitem, fname):
+	if fname in treeitem.get_text(TICOL_FILENAME):
+		return treeitem
+	else:
+		var child_treeitem = treeitem.get_children()
+		if child_treeitem:
+			var match_among_children = get_matched_tree_item(child_treeitem, fname)
+			if match_among_children:
+				return match_among_children
+		
+		var next_treeitem = treeitem.get_next()
+		if next_treeitem:
+			return get_matched_tree_item(next_treeitem, fname)
+		
+	return null
+
 func go_through_folder_for_update(dir, search, parent_ti=null):
 	var file_name = dir.get_next()
 	while file_name != "":
@@ -234,7 +250,8 @@ func item_id_effect(options_node, id):
 			var filepath = options_node.category_folder.plus_file(options_node.get_text())
 			filesystem_dock.navigate_to_path(filepath)
 		OPT_SHOWINCAT:
-			print("Show in Category")
+			var target_item = get_matched_tree_item(tree_list.get_root(), options_node.get_text())
+			target_item.select(TICOL_FILENAME)
 
 func set_editor_plugin(node):
 	editor_plugin = node
