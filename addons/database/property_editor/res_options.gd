@@ -6,8 +6,8 @@ const NULL_VALUE_TEXT = "[empty]"
 var editor_plugin
 var main_screen
 var empty_options
+var empty_wcat
 var resource_options
-var data_options
 
 var drag_data
 var class_hint = "Resource"
@@ -28,8 +28,8 @@ func _editor_plugin_is_set():
 	editor_plugin = get_parent().editor_plugin
 	main_screen = editor_plugin.main_panel_instance
 	empty_options = main_screen.empty_options
+	empty_wcat = main_screen.empty_wcat
 	resource_options = main_screen.resource_options
-	data_options = main_screen.data_options
 
 func _gui_input(event):
 	if event is InputEventMouseButton and event.get_button_index() == BUTTON_RIGHT and event.is_pressed():
@@ -38,13 +38,13 @@ func _gui_input(event):
 		main_screen.selected_resoptions = self
 		var options
 		if get_text() == NULL_VALUE_TEXT:
-			options = empty_options
-		else:
 			var value = get_parent().resource_container.associated_resource.get(get_parent().property_name)
-			if main_screen.DATA_DIR in category_folder:
-				options = data_options
+			if category_folder and main_screen.DATA_DIR in category_folder:
+				options = empty_wcat
 			else:
-				options = resource_options
+				options = empty_options
+		else:
+			options = resource_options
 		
 		options.popup(Rect2(mouse_pos, options.get_size()))
 

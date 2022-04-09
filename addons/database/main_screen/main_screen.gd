@@ -26,8 +26,8 @@ var cat_config = {}
 
 var selected_resoptions
 onready var empty_options = $EmptyResourceOptions
+onready var empty_wcat = $EmptyWithCategory
 onready var resource_options = $ResourceOptions
-onready var data_options = $DataResourceOptions
 enum {OPT_NEW, OPT_NEWAS, OPT_LOAD, OPT_INSTALOAD, OPT_CAT, OPT_EDIT, OPT_CLEAR, OPT_SHOWINFOLDER, OPT_SHOWINCAT}
 
 func _option_pressed_by_id(id):
@@ -109,10 +109,15 @@ func _on_item_selected():
 func _on_search_changed(new_text):
 	update_tree(new_text)
 
-func add_options_to_popup(popup, has_value=false):
+func add_options_to_popup(popup, has_value=false, with_category=false):
 	var editor_control = editor_interface.get_base_control()
 	
+	if with_category:
+		var icon_newres = $VBoxContainer/HBoxContainer/NewResource.get_button_icon()
+		popup.add_icon_item(icon_newres, "New Resource", OPT_CAT)
+	
 	popup.add_icon_item(icon_folder, "Limit to Category", OPT_CAT)
+	
 	if has_value:
 		var icon_edit = editor_control.get_icon("Edit", "EditorIcons")
 		popup.add_icon_item(icon_edit, "Edit", OPT_EDIT)
@@ -269,7 +274,7 @@ func set_editor_plugin(node):
 	# USING EDITOR PLUGIN TO ADD ONTO RESOURCE OPTIONS
 	add_options_to_popup(empty_options)
 	empty_options.set_as_minsize()
+	add_options_to_popup(empty_wcat, false, true)
+	empty_wcat.set_as_minsize()
 	add_options_to_popup(resource_options, true)
 	resource_options.set_as_minsize()
-	add_options_to_popup(data_options, true)
-	data_options.set_as_minsize()
