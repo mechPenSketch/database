@@ -177,9 +177,6 @@ func setup_default_options():
 	var popup:PopupMenu = get_popup()
 	var editor_control = editor_plugin.get_editor_interface().get_base_control()
 	
-	var icon_class = editor_control.get_icon(get_icon_name(class_hint), "EditorIcons")
-	popup.add_icon_item(icon_class, "New Resource", main_screen.OPT_NEW)
-	popup.add_icon_item(icon_class, "New Class as...", main_screen.OPT_NEWAS)
 	var icon_load = editor_control.get_icon("Load", "EditorIcons")
 	popup.add_icon_item(icon_load, "Load", main_screen.OPT_LOAD)
 	

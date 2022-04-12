@@ -40,15 +40,22 @@ func _newcat_pressed():
 	newcat_name.grab_focus()
 	
 func _newres_pressed():
-	$NewResource.popup_centered()
-	
 	# SET CATEGORY
 	var selected_item = get_selected_category()
 	res_cat_options.set_disabled(false)
 	
+	var target_cat = ""
 	if selected_item:
+		target_cat = selected_item.get_text(TICOL_FILENAME)
+	
+	open_newres_popup(target_cat)
+	
+func open_newres_popup(target_cat):
+	$NewResource.popup_centered()
+	
+	if target_cat:
 		for i in res_cat_options.get_item_count():
-			if res_cat_options.get_item_text(i) == selected_item.get_text(TICOL_FILENAME):
+			if res_cat_options.get_item_text(i) == target_cat:
 				res_cat_options.select(i)
 				break
 	
@@ -124,7 +131,7 @@ func add_options_to_popup(popup, has_value=false, with_category=false):
 	
 	if with_category:
 		var icon_newres = $VBoxContainer/HBoxContainer/NewResource.get_button_icon()
-		popup.add_icon_item(icon_newres, "New Resource", OPT_CAT)
+		popup.add_icon_item(icon_newres, "New Resource", OPT_NEW)
 	
 	popup.add_icon_item(icon_folder, "Limit to Category", OPT_CAT)
 	
@@ -257,7 +264,11 @@ func go_through_folder_for_update(dir, search, parent_ti=null):
 func item_id_effect(options_node, id):
 	match id:
 		OPT_NEW:
-			print("New res")
+			# SET CATEGORY
+			res_cat_options.set_disabled(true)
+			var target_cat = options_node.category_folder.split("/")[-1].capitalize()
+			
+			open_newres_popup(target_cat)
 		OPT_NEWAS:
 			print("New res As...")
 		OPT_LOAD:
