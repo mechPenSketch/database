@@ -42,6 +42,16 @@ func _newcat_pressed():
 func _newres_pressed():
 	$NewResource.popup_centered()
 	
+	# SET CATEGORY
+	var selected_item = get_selected_category()
+	res_cat_options.set_disabled(false)
+	
+	if selected_item:
+		for i in res_cat_options.get_item_count():
+			if res_cat_options.get_item_text(i) == selected_item.get_text(TICOL_FILENAME):
+				res_cat_options.select(i)
+				break
+	
 	# FOCUS ON INPUT
 	newres_name.grab_focus()
 
@@ -166,6 +176,15 @@ func get_matched_tree_item(treeitem, fname):
 			return get_matched_tree_item(next_treeitem, fname)
 		
 	return null
+
+func get_selected_category():
+	var value = tree_list.get_selected()
+	
+	if value:
+		while value.get_text(TICOL_FILENAME).get_extension():
+			value = value.get_parent()
+		
+	return value
 
 func go_through_folder_for_update(dir, search, parent_ti=null):
 	var file_name = dir.get_next()
