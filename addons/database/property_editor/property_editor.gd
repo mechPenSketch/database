@@ -13,6 +13,9 @@ signal editor_plugin_is_set
 
 var prev_val
 
+func _choosecat_dir_selected(dir):
+	resource_container.augment_config(property_name, dir)
+
 func set_property(p):
 	property_name = p["name"]
 	$Name.set_text(property_name.capitalize())

@@ -7,12 +7,12 @@ var editor_plugin
 var main_screen
 var empty_options
 var empty_wcat
-var resource_options
+var resource_options # THE POPUP, NOT SELF
 
 var drag_data
 var class_hint = "Resource"
 
-var category_folder
+onready var cat_filesystem = get_parent().get_node("ChooseCat")
 
 const RES_EXTS = ["res", "tres"]
 signal resource_is_set
@@ -39,7 +39,7 @@ func _gui_input(event):
 		var options
 		if get_text() == NULL_VALUE_TEXT:
 			var value = get_parent().resource_container.associated_resource.get(get_parent().property_name)
-			if category_folder and main_screen.DATA_DIR in category_folder:
+			if main_screen.DATA_DIR in get_category_folder():
 				options = empty_wcat
 			else:
 				options = empty_options
@@ -54,7 +54,7 @@ func _item_selected(index:int):
 	if id == main_screen.OPT_INSTALOAD:
 		#SETTING A RESOURCE
 		var file_name = get_item_text(index)
-		var full_path = category_folder.plus_file(file_name)
+		var full_path = get_category_folder().plus_file(file_name)
 		emit_signal("resource_is_set", get_parent(), full_path)
 	else:
 		main_screen.item_id_effect(self, id)
@@ -66,7 +66,7 @@ func can_drop_data(_p, _d):
 func change_options(dir):
 	get_popup().clear()
 	
-	category_folder = dir
+	cat_filesystem.set_current_dir(dir)
 	
 	if dir == "res://":
 		setup_default_options()
@@ -91,7 +91,8 @@ func drop_data(_p, data):
 	#print(data)
 	match data["type"]:
 		"files_and_dirs":
-			get_parent().main_screen.augment_config(get_property_name(), data["files"][0])
+			get_parent().resource_container.augment_config(get_property_name(), data["files"][0])
+			change_options(data["files"][0])
 		"files":
 			set_text(data["files"][0].get_file())
 			emit_signal("resource_is_set", get_parent(), data["files"][0])
@@ -120,6 +121,9 @@ func go_through_folder_for_options(dir:Directory, base_folder:String = ""):
 		file_name = dir.get_next()
 		
 	dir.list_dir_end()
+
+func get_category_folder():
+	return cat_filesystem.get_current_dir()
 
 func get_icon_name(cn)->String:
 	match cn:

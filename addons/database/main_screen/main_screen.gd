@@ -30,9 +30,6 @@ onready var empty_wcat = $EmptyWithCategory
 onready var resource_options = $ResourceOptions
 enum {OPT_NEW, OPT_NEWAS, OPT_LOAD, OPT_INSTALOAD, OPT_CAT, OPT_EDIT, OPT_CLEAR, OPT_SHOWINFOLDER, OPT_SHOWINCAT}
 
-func _option_pressed_by_id(id):
-	item_id_effect(selected_resoptions, id)
-
 func _newcat_pressed():
 	$NewCategory.popup_centered()
 	
@@ -49,18 +46,6 @@ func _newres_pressed():
 		target_cat = selected_item.get_text(TICOL_FILENAME)
 	
 	open_newres_popup(target_cat)
-	
-func open_newres_popup(target_cat):
-	$NewResource.popup_centered()
-	
-	if target_cat:
-		for i in res_cat_options.get_item_count():
-			if res_cat_options.get_item_text(i) == target_cat:
-				res_cat_options.select(i)
-				break
-	
-	# FOCUS ON INPUT
-	newres_name.grab_focus()
 
 func _newcat_confirmed():
 	var base_dir = Directory.new()
@@ -126,6 +111,9 @@ func _on_item_selected():
 func _on_search_changed(new_text):
 	update_tree(new_text)
 
+func _option_pressed_by_id(id):
+	item_id_effect(selected_resoptions, id)
+
 func add_options_to_popup(popup, has_value=false, with_category=false):
 	var editor_control = editor_interface.get_base_control()
 	
@@ -144,29 +132,6 @@ func add_options_to_popup(popup, has_value=false, with_category=false):
 		popup.add_separator()
 		
 		popup.add_item("Show in Filesystem", OPT_SHOWINFOLDER)
-
-func update_tree(search:String = ""):
-	# UNLINK TREE ITEM FROM RESOURCES
-	for c in data_container.get_children():
-		c.associated_treeitem = null
-		
-	tree_list.clear()
-	res_cat_options.clear()
-	
-	var main_dir = Directory.new()
-	var open_error = main_dir.open(DATA_DIR)
-	
-	match open_error:
-		OK:
-			# GO THROUGH DIRECTORY
-			main_dir.list_dir_begin(true, false)
-			go_through_folder_for_update(main_dir, search,  tree_list.create_item())
-			for c in data_container.get_children():
-				c.update_property_options()
-		ERR_INVALID_PARAMETER:
-			print("missing data folder")
-		_:
-			print(open_error)
 
 func get_matched_tree_item(treeitem, fname):
 	if fname in treeitem.get_text(TICOL_FILENAME):
@@ -266,7 +231,7 @@ func item_id_effect(options_node, id):
 		OPT_NEW:
 			# SET CATEGORY
 			res_cat_options.set_disabled(true)
-			var target_cat = options_node.category_folder.split("/")[-1].capitalize()
+			var target_cat = options_node.get_category_folder().split("/")[-1].capitalize()
 			
 			open_newres_popup(target_cat)
 		OPT_NEWAS:
@@ -274,9 +239,9 @@ func item_id_effect(options_node, id):
 		OPT_LOAD:
 			print("Open Filesystem")
 		OPT_CAT:
-			print("Pick a Category")
+			options_node.cat_filesystem.popup_centered_ratio()
 		OPT_EDIT:
-			if DATA_DIR in options_node.category_folder and options_node.get_text().get_extension() in options_node.RES_EXTS:
+			if DATA_DIR in options_node.get_category_folder():
 				var target_item = get_matched_tree_item(tree_list.get_root(), options_node.get_text())
 				target_item.select(TICOL_FILENAME)
 			else:
@@ -284,8 +249,20 @@ func item_id_effect(options_node, id):
 		OPT_CLEAR:
 			options_node.clear_value()
 		OPT_SHOWINFOLDER:
-			var filepath = options_node.category_folder.plus_file(options_node.get_text())
+			var filepath = options_node.get_category_folder().plus_file(options_node.get_text())
 			filesystem_dock.navigate_to_path(filepath)
+	
+func open_newres_popup(target_cat):
+	$NewResource.popup_centered()
+	
+	if target_cat:
+		for i in res_cat_options.get_item_count():
+			if res_cat_options.get_item_text(i) == target_cat:
+				res_cat_options.select(i)
+				break
+	
+	# FOCUS ON INPUT
+	newres_name.grab_focus()
 
 func set_editor_plugin(node):
 	editor_plugin = node
@@ -308,3 +285,26 @@ func set_editor_plugin(node):
 	empty_wcat.set_as_minsize()
 	add_options_to_popup(resource_options, true)
 	resource_options.set_as_minsize()
+
+func update_tree(search:String = ""):
+	# UNLINK TREE ITEM FROM RESOURCES
+	for c in data_container.get_children():
+		c.associated_treeitem = null
+		
+	tree_list.clear()
+	res_cat_options.clear()
+	
+	var main_dir = Directory.new()
+	var open_error = main_dir.open(DATA_DIR)
+	
+	match open_error:
+		OK:
+			# GO THROUGH DIRECTORY
+			main_dir.list_dir_begin(true, false)
+			go_through_folder_for_update(main_dir, search,  tree_list.create_item())
+			for c in data_container.get_children():
+				c.update_property_options()
+		ERR_INVALID_PARAMETER:
+			print("missing data folder")
+		_:
+			print(open_error)

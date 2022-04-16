@@ -17,5 +17,16 @@ toggle_mode = false
 text = "New Resource"
 script = ExtResource( 2 )
 
+[node name="ChooseCat" type="FileDialog" parent="." index="2"]
+margin_left = 709.0
+margin_right = 1024.0
+margin_bottom = 600.0
+window_title = "Open a Directory"
+mode = 2
+current_dir = "res://data"
+current_path = "res://data/"
+
 [connection signal="editor_plugin_is_set" from="." to="OptionButton" method="_editor_plugin_is_set"]
 [connection signal="item_selected" from="OptionButton" to="OptionButton" method="_item_selected"]
+[connection signal="dir_selected" from="ChooseCat" to="." method="_choosecat_dir_selected"]
+[connection signal="dir_selected" from="ChooseCat" to="OptionButton" method="change_options"]
