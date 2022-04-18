@@ -14,10 +14,8 @@ Godot 3.x
 ### Installation
 After downloading, move the folder `addons/database` to your project folder.
 
-## Goal-Post
-By v1.0, it is to have the following:
-* ~Add Categories and Resources~
-* Datatypes for Editing a Property
+### Example Project
+In the given project, go to the new Workspace Database on the top-center corner of the screen. Click on one of the resources on the database tree, and its property should be listed.
 
 ## License
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details
