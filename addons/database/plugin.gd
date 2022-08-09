@@ -8,6 +8,13 @@ var tab_container
 var current_main_screen_is_database
 
 func _enter_tree():
+	# CHECK FOR DATA FOLDER
+	var dir = Directory.new()
+	var dir_data = "data"
+	if !dir.dir_exists(dir_data):
+		dir.make_dir(dir_data)
+	
+	# MAIN PANEL
 	main_panel_instance = MainPanel.instance()
 	get_editor_interface().get_editor_viewport().add_child(main_panel_instance)
 	make_visible(false)
