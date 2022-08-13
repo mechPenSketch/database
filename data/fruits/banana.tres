@@ -1,7 +1,6 @@
-[gd_resource type="Resource" load_steps=3 format=2]
+[gd_resource type="Resource" load_steps=2 format=2]
 
 [ext_resource path="res://data/fruits/fruit.gd" type="Script" id=1]
-[ext_resource path="res://data/alphabet/alpeh.res" type="Resource" id=2]
 
 [resource]
 script = ExtResource( 1 )
@@ -9,5 +8,5 @@ name = "Ban Nah"
 is_actually_a_veggie = false
 index = 0
 weight = 18.0
-main_color = ExtResource( 2 )
+main_color = Color( 1, 0.913725, 0, 1 )
 flavor_text = ""

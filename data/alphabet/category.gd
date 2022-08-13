@@ -1,3 +1,3 @@
 extends Resource
 
-export(String) var color
+export(Color, RGBA) var color

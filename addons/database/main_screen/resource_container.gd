@@ -119,6 +119,12 @@ func list_properties(c, cf:String, fn):
 					
 					if value:
 						line_edit.set_text(value)
+				"Color", "ColorAlpha":
+					var clr_picker = pe_inst.get_node("ColorPickerButton")
+					clr_picker.connect("color_changed", self, "_on_value_changed", [pe_inst.tree_index])
+					
+					if value:
+						clr_picker.set_pick_color(value)
 				"StringMultiline":
 					var text_edit = pe_inst.get_node("HBoxContainer/TextEdit")
 					text_edit.connect("text_changed", self, "_on_textedit_changed", [pe_inst.tree_index])
@@ -149,6 +155,12 @@ func get_pe_by_type(property):
 			return "Int"
 		TYPE_OBJECT:
 			return "Resource"
+		TYPE_COLOR:
+			match property["hint"]:
+				PROPERTY_HINT_COLOR_NO_ALPHA:
+					return "Color"
+				_:
+					return "ColorAlpha"
 		_:
 			match property["hint"]:
 				PROPERTY_HINT_MULTILINE_TEXT:
