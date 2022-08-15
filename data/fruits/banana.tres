@@ -10,3 +10,6 @@ index = 0
 weight = 18.0
 main_color = Color( 1, 0.913725, 0, 1 )
 flavor_text = ""
+leaf_type = "Spikey"
+store_level = 1
+grown_on = 2

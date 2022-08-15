@@ -107,6 +107,12 @@ func list_properties(c, cf:String, fn):
 					
 					if value:
 						check_box.set_pressed(value)
+				"Enum":
+					var option_btn = pe_inst.get_node("OptionButton")
+					
+					option_btn.add_options(pl["hint_string"], pl["type"], value)
+					
+					option_btn.connect("item_selected", self, "_on_enum_selected", [option_btn])
 				"Float", "Int":
 					var spinbox = pe_inst.get_node("SpinBox")
 					spinbox.connect("value_changed", self, "_on_value_changed", [pe_inst.tree_index])
@@ -149,24 +155,45 @@ func get_pe_by_type(property):
 	match property["type"]:
 		TYPE_BOOL:
 			return "Bool"
+		
 		TYPE_REAL:
-			return "Float"
+			if property["hint"] == PROPERTY_HINT_ENUM:
+				return "Enum"
+			else:
+				return "Float"
+		
 		TYPE_INT:
-			return "Int"
+			if property["hint"] == PROPERTY_HINT_ENUM:
+				return "Enum"
+			else:
+				return "Int"
+		
 		TYPE_OBJECT:
 			return "Resource"
+		
 		TYPE_COLOR:
-			match property["hint"]:
-				PROPERTY_HINT_COLOR_NO_ALPHA:
-					return "Color"
-				_:
-					return "ColorAlpha"
+			if property["hint"] == PROPERTY_HINT_COLOR_NO_ALPHA:
+				return "Color"
+			else:
+				return "ColorAlpha"
+		
 		_:
 			match property["hint"]:
+				PROPERTY_HINT_ENUM, PROPERTY_HINT_ENUM_SUGGESTION:
+					return "Enum"
 				PROPERTY_HINT_MULTILINE_TEXT:
 					return "StringMultiline"
 				_:
 					return "String"
+
+func _on_enum_selected(index, optbtn):
+	var node = optbtn.get_parent()
+	var value = optbtn.option_values[index]
+	
+	associated_resource.set(node.property_name, value)
+	
+	if value != node.prev_val:
+		set_unsaved_changes(true)
 
 func _on_property_resource_set(node, res_path):
 	var value = null if !res_path else ResourceLoader.load(res_path)
