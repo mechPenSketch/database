@@ -82,7 +82,9 @@ func list_properties(c, cf:String, fn):
 				
 				# ADD NEW GRIDLIST AFTER
 				if gridlist.get_child_count():
-					vlist.add_child(GridContainer.new())
+					var new_gridcont = GridContainer.new()
+					vlist.add_child(new_gridcont)
+					new_gridcont.set_columns(3)
 					index[0] += 2
 				else:
 					vlist.move_child(gridlist, gridlist.get_index() + 1)
