@@ -231,11 +231,11 @@ func save_resource():
 		set_unsaved_changes(false)
 
 func save_property_aftermath(node):
-	if node is VBoxContainer or node is GridContainer:
+	if node is DataPropertyEditor or node is DataPropertyEditorWide:
+		node.prev_val = associated_resource.get(node.property_name)
+	else:
 		for child in node.get_children():
 			save_property_aftermath(child)
-	else:
-		node.prev_val = associated_resource.get(node.property_name)
 
 func set_unsaved_changes(value:bool):
 	has_unsaved_changes = value
