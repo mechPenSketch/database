@@ -179,6 +179,9 @@ func get_pe_by_type(property):
 			else:
 				return "ColorAlpha"
 		
+		TYPE_ARRAY:
+			return "List"
+		
 		_:
 			match property["hint"]:
 				PROPERTY_HINT_ENUM, PROPERTY_HINT_ENUM_SUGGESTION:

@@ -13,3 +13,4 @@ flavor_text = "A banana is long and cresent-shaped. Peel it, and it is mashable.
 leaf_type = "Spikey"
 store_level = 1
 grown_on = 2
+weight_samples = [ null ]

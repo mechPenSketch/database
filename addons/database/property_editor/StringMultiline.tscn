@@ -8,15 +8,16 @@
 margin_top = 18.0
 margin_right = 1024.0
 margin_bottom = 66.0
+custom_constants/separation = 0
 
 [node name="Label" type="Label" parent="HBoxContainer" index="0"]
 margin_bottom = 48.0
+size_flags_vertical = 0
 text = "
 
 "
 
 [node name="TextEdit" type="TextEdit" parent="HBoxContainer" index="1"]
-margin_left = 4.0
 margin_right = 1024.0
 margin_bottom = 48.0
 size_flags_horizontal = 3
