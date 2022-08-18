@@ -179,7 +179,7 @@ func get_pe_by_type(property):
 			else:
 				return "ColorAlpha"
 		
-		TYPE_ARRAY:
+		TYPE_DICTIONARY, TYPE_ARRAY, TYPE_INT_ARRAY, TYPE_REAL_ARRAY, TYPE_STRING_ARRAY, TYPE_COLOR_ARRAY:
 			return "List"
 		
 		_:
