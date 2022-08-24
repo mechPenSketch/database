@@ -1,0 +1,43 @@
+[gd_scene format=2]
+
+[node name="VBoxContainer" type="VBoxContainer"]
+margin_left = 514.0
+margin_right = 1024.0
+margin_bottom = 600.0
+size_flags_horizontal = 3
+
+[node name="OptionButton" type="OptionButton" parent="."]
+margin_right = 510.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+text = "Nil"
+items = [ "Nil", null, false, 0, null, "bool", null, false, 1, null, "int", null, false, 2, null, "float", null, false, 3, null, "String", null, false, 4, null, "Color", null, false, 5, null ]
+selected = 0
+
+[node name="CheckBox" type="CheckBox" parent="."]
+visible = false
+margin_top = 24.0
+margin_right = 510.0
+margin_bottom = 48.0
+
+[node name="SpinBox" type="SpinBox" parent="."]
+visible = false
+margin_top = 24.0
+margin_right = 510.0
+margin_bottom = 48.0
+size_flags_horizontal = 3
+rounded = true
+allow_greater = true
+allow_lesser = true
+
+[node name="LineEdit" type="LineEdit" parent="."]
+visible = false
+margin_top = 24.0
+margin_right = 510.0
+margin_bottom = 48.0
+
+[node name="ColorPickerButton" type="ColorPickerButton" parent="."]
+visible = false
+margin_top = 24.0
+margin_right = 510.0
+margin_bottom = 44.0
