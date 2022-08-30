@@ -5,10 +5,7 @@
 [node name="HBoxContainer" instance=ExtResource( 1 )]
 rect_pivot_offset = Vector2( -640.01, 0 )
 
-[node name="HBoxContainer" parent="." index="0"]
-margin_right = 510.0
-
-[node name="Name" parent="HBoxContainer" index="1"]
+[node name="Name" parent="." index="0"]
 margin_right = 510.0
 
 [node name="LineEdit" type="LineEdit" parent="." index="1"]

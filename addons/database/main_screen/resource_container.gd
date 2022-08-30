@@ -152,6 +152,11 @@ func list_properties(c, cf:String, fn):
 					option_btn.class_hint = pl["class_name"]
 					
 					option_btn.connect("resource_is_set", self, "_on_property_resource_set")
+				"List":
+					var grid_container = pe_inst.get_node("PanelContainer/GridContainer")
+					
+					grid_container.set_datatype(pl["type"], pl["hint"])
+					grid_container.list_items(value)
 
 func get_pe_by_type(property):
 	match property["type"]:

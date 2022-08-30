@@ -4,10 +4,7 @@
 
 [node name="HBoxContainer" instance=ExtResource( 1 )]
 
-[node name="HBoxContainer" parent="." index="0"]
-margin_right = 510.0
-
-[node name="Name" parent="HBoxContainer" index="1"]
+[node name="Name" parent="." index="0"]
 margin_right = 510.0
 
 [node name="ColorPickerButton" type="ColorPickerButton" parent="." index="1"]
