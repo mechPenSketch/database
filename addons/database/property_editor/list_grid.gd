@@ -10,7 +10,11 @@ var pkscn_subprop
 func list_items(val):
 	if val:
 		if data_type == TYPE_DICTIONARY:
-			var keys = val.keys()
+			for k in val.keys():
+				var item = pkscn_subprop.instance()
+				add_child(item)
+				item.set_key(k)
+				item.set_value(val[k])
 		else:
 			for i in val.size():
 				var item = pkscn_subprop.instance()
