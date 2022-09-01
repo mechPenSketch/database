@@ -7,7 +7,12 @@ var property_hint
 export(String, DIR) var dir_subprop
 var pkscn_subprop
 
+var current_value
+signal list_changed
+
 func list_items(val):
+	current_value = val
+	
 	if val:
 		if data_type == TYPE_DICTIONARY:
 			for k in val.keys():
@@ -40,3 +45,10 @@ func set_datatype(type, hint):
 		_:
 			fp_subprop += "/ArrayItemVar.tscn"
 	pkscn_subprop = load(fp_subprop)
+
+# SIGNALS FROM INPUT
+
+func _on_value_changed(v, i, a = current_value):
+	a[i] = v
+	
+	emit_signal("list_changed", current_value)

@@ -157,6 +157,8 @@ func list_properties(c, cf:String, fn):
 					
 					grid_container.set_datatype(pl["type"], pl["hint"])
 					grid_container.list_items(value)
+					
+					grid_container.connect("list_changed", self, "_on_value_changed", [pe_inst.tree_index])
 
 func get_pe_by_type(property):
 	match property["type"]:
