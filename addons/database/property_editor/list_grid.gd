@@ -25,7 +25,6 @@ func list_items(val):
 			for i in val.size():
 				var item = pkscn_subprop.instance()
 				add_child(item)
-				print(val[i])
 				item.set_item(i, val[i])
 
 func set_datatype(type, hint, h_string):
