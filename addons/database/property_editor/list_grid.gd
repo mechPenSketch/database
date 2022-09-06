@@ -11,6 +11,8 @@ var pkscn_subprop
 var current_value
 signal list_changed
 
+var add_item = Button.new()
+
 func list_items(val):
 	current_value = val
 	
@@ -26,6 +28,8 @@ func list_items(val):
 				var item = pkscn_subprop.instance()
 				add_child(item)
 				item.set_item(i, val[i])
+	
+	add_child(add_item)
 
 func set_datatype(type, hint, h_string):
 	data_type = type
@@ -43,6 +47,8 @@ func set_datatype(type, hint, h_string):
 	## "4:" String
 	if data_type == TYPE_DICTIONARY:
 		fp_subprop += "/DictionaryItem.tscn"
+		
+		add_item.set_text("Add Pair")
 	else:
 		fp_subprop += "/ArrayItem"
 		if property_hint:
@@ -58,6 +64,8 @@ func set_datatype(type, hint, h_string):
 		else:
 			fp_subprop += "Var"
 		fp_subprop += ".tscn"
+		
+		add_item.set_text("Add Item")
 	
 	pkscn_subprop = load(fp_subprop)
 
