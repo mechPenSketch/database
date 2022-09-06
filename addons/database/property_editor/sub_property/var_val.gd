@@ -2,7 +2,7 @@ tool
 extends VBoxContainer
 
 func _value(v):
-	var opt_btn = $OptionButton
+	var opt_btn = $HBoxContainer/OptionButton
 	
 	match typeof(v):
 		TYPE_BOOL:

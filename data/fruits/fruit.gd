@@ -15,4 +15,4 @@ enum LEVELS { BASEMENT_1=-1, GROUND, LEVEL_1, LEVEL_2 }
 export(LEVELS) var store_level
 export(int, "Underground", "On Ground", "High Sky") var grown_on
 
-export(Array) var weight_samples
+export(Array, float) var weight_samples
