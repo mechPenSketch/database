@@ -12,6 +12,7 @@ var current_value
 signal list_changed
 
 var add_item = Button.new()
+var default_value
 
 func list_items(val):
 	current_value = val
@@ -30,6 +31,7 @@ func list_items(val):
 				item.set_item(i, val[i])
 	
 	add_child(add_item)
+	add_item.connect("pressed", self, "_on_additem_pressed")
 
 func set_datatype(type, hint, h_string):
 	data_type = type
@@ -55,12 +57,16 @@ func set_datatype(type, hint, h_string):
 			match hint_string:
 				"2:":
 					fp_subprop += "Int"
+					default_value = 0
 				"3:":
 					fp_subprop += "Float"
+					default_value = 0.0
 				"4:":
 					fp_subprop += "String"
+					default_value = ""
 				"5:":
 					fp_subprop += "ColorAlpha"
+					default_value = Color()
 		else:
 			fp_subprop += "Var"
 		fp_subprop += ".tscn"
@@ -70,6 +76,16 @@ func set_datatype(type, hint, h_string):
 	pkscn_subprop = load(fp_subprop)
 
 # SIGNALS FROM INPUT
+
+func _on_additem_pressed():
+	var item = pkscn_subprop.instance()
+	add_child(item)
+	var index = item.get_position_in_parent() - 1
+	move_child(item, index)
+	item.set_item(index, default_value)
+	
+	current_value.append(default_value)
+	emit_signal("list_changed", current_value)
 
 func _on_value_changed(v, i, a = current_value):
 	a[i] = v
