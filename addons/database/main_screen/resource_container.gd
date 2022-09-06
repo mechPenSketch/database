@@ -155,7 +155,7 @@ func list_properties(c, cf:String, fn):
 				"List":
 					var grid_container = pe_inst.get_node("PanelContainer/GridContainer")
 					
-					grid_container.set_datatype(pl["type"], pl["hint"])
+					grid_container.set_datatype(pl["type"], pl["hint"], pl["hint_string"])
 					grid_container.list_items(value)
 					
 					grid_container.connect("list_changed", self, "_on_value_changed", [pe_inst.tree_index])

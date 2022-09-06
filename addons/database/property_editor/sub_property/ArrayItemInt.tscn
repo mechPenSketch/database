@@ -17,3 +17,5 @@ rounded = true
 allow_greater = true
 allow_lesser = true
 script = ExtResource( 2 )
+
+[connection signal="value" from="." to="SpinBox" method="_value"]

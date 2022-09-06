@@ -3,6 +3,7 @@ extends GridContainer
 
 var data_type
 var property_hint
+var hint_string
 
 export(String, DIR) var dir_subprop
 var pkscn_subprop
@@ -24,26 +25,41 @@ func list_items(val):
 			for i in val.size():
 				var item = pkscn_subprop.instance()
 				add_child(item)
+				print(val[i])
 				item.set_item(i, val[i])
 
-func set_datatype(type, hint):
+func set_datatype(type, hint, h_string):
 	data_type = type
 	property_hint = hint
+	hint_string = h_string
 	
 	var fp_subprop = dir_subprop
-	match data_type:
-		TYPE_DICTIONARY:
-			fp_subprop += "/DictionaryItem.tscn"
-		TYPE_INT_ARRAY:
-			fp_subprop += "/ArrayItemInt.tscn"
-		TYPE_REAL_ARRAY:
-			fp_subprop += "/ArrayItemFloat.tscn"
-		TYPE_STRING_ARRAY:
-			fp_subprop += "/ArrayItemString.tscn"
-		TYPE_COLOR_ARRAY:
-			fp_subprop += "/ArrayItemColorAlpha.tscn"
-		_:
-			fp_subprop += "/ArrayItemVar.tscn"
+	# property_hint: int
+	##	0: no further export hints
+	##	26: float, String etc
+	
+	# hint_string: String
+	## "2:" int
+	## "3:" float
+	## "4:" String
+	if data_type == TYPE_DICTIONARY:
+		fp_subprop += "/DictionaryItem.tscn"
+	else:
+		fp_subprop += "/ArrayItem"
+		if property_hint:
+			match hint_string:
+				"2:":
+					fp_subprop += "Int"
+				"3:":
+					fp_subprop += "Float"
+				"4:":
+					fp_subprop += "String"
+				"5:":
+					fp_subprop += "ColorAlpha"
+		else:
+			fp_subprop += "Var"
+		fp_subprop += ".tscn"
+	
 	pkscn_subprop = load(fp_subprop)
 
 # SIGNALS FROM INPUT
