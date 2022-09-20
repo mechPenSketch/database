@@ -1,6 +1,9 @@
 tool
 extends VBoxContainer
 
+var listgrid
+var index
+
 enum {DT_NULL, DT_BOOL, DT_INT, DT_FLOAT, DT_STRING, DT_COLOR}
 var datatypes = { TYPE_BOOL: DT_BOOL,
 	TYPE_INT: DT_INT,
@@ -14,7 +17,15 @@ onready var input_bool = $CheckBox
 onready var input_number = $SpinBox
 onready var input_color = $ColorPickerButton
 
-func _value(v):
+signal value_changed
+
+func _listgrid(lg):
+	listgrid = lg
+	connect("value_changed", listgrid, "_on_value_changed")
+
+func _value(i, v):
+	index = i
+	
 	var opt_btn = $HBoxContainer/OptionButton
 	
 	opt_btn.connect("item_selected", self, "_on_datatype_selected")
@@ -44,14 +55,19 @@ func unset_datatype(i):
 			input_string.hide()
 		DT_BOOL:
 			input_bool.hide()
+			input_bool.disconnect("toggled", self, "_on_checkbox_toggled")
 		DT_INT:
 			input_number.hide()
+			input_number.disconnect("value_changed", self, "_on_valinspinbox_changed")
 		DT_FLOAT:
 			input_number.hide()
+			input_number.disconnect("value_changed", self, "_on_valinspinbox_changed")
 		DT_STRING:
 			input_string.hide()
+			input_string.disconnect("text_changed", self, "_on_lineedit_changed")
 		DT_COLOR:
 			input_color.hide()
+			input_color.disconnect("color_changed", self, "_on_colorpicker_changed")
 	
 func set_datatype(i):
 	match i:
@@ -61,16 +77,44 @@ func set_datatype(i):
 			input_string.set_editable(false)
 		DT_BOOL:
 			input_bool.show()
+			
+			input_bool.connect("toggled", self, "_on_checkbox_toggled")
 		DT_INT:
 			input_number.show()
 			input_number.set_step(1)
 			input_number.set_rounded(true)
+			
+			input_number.connect("value_changed", self, "_on_valinspinbox_changed")
 		DT_FLOAT:
 			input_number.show()
 			input_number.set_step(0.001)
 			input_number.set_rounded(false)
+			
+			input_number.connect("value_changed", self, "_on_valinspinbox_changed")
 		DT_STRING:
 			input_string.show()
 			input_string.set_editable(true)
+			
+			input_string.connect("text_changed", self, "_on_lineedit_changed")
 		DT_COLOR:
 			input_color.show()
+			
+			input_color.connect("color_changed", self, "_on_colorpicker_changed")
+
+func _on_checkbox_toggled(b):
+	emit_signal("value_changed", b, index)
+	
+func _on_valinspinbox_changed(f):
+	var val
+	if prev_datatype == DT_INT:
+		val = int(f)
+	else:
+		val = f
+		
+	emit_signal("value_changed", val, index)
+	
+func _on_lineedit_changed(s):
+	emit_signal("value_changed", s, index)
+	
+func _on_colorpicker_changed(c):
+	emit_signal("value_changed", c, index)

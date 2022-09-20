@@ -28,7 +28,7 @@ func list_items(val):
 			for i in val.size():
 				var item = pkscn_subprop.instance()
 				add_child(item)
-				item.set_item(i, val[i])
+				item.set_item(i, val[i], self)
 	
 	add_child(add_item)
 	add_item.connect("pressed", self, "_on_additem_pressed")
@@ -82,7 +82,7 @@ func _on_additem_pressed():
 	add_child(item)
 	var index = item.get_position_in_parent() - 1
 	move_child(item, index)
-	item.set_item(index, default_value)
+	item.set_item(index, default_value, self)
 	
 	current_value.append(default_value)
 	emit_signal("list_changed", current_value)
