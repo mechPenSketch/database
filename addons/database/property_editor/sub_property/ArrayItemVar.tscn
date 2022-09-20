@@ -5,4 +5,9 @@
 
 [node name="HBoxContainer" instance=ExtResource( 1 )]
 
+[node name="Index" parent="." index="0"]
+margin_right = 510.0
+
 [node name="VBoxContainer" parent="." index="1" instance=ExtResource( 2 )]
+
+[connection signal="value" from="." to="VBoxContainer" method="_value"]
