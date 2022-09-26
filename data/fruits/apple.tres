@@ -13,4 +13,4 @@ flavor_text = ""
 leaf_type = ""
 store_level = 0
 grown_on = 0
-weight_samples = [  ]
+weight_samples = [ 0.5 ]

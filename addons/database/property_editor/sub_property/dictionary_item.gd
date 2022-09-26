@@ -1,8 +1,11 @@
 tool
 extends HBoxContainer
 
-func set_key(k):
-	$Key._value(k)
+signal listgrid
+signal key
+signal value
 
-func set_value(v):
-	$Value._value(v)
+func set_pair(key, value, listgrid):
+	emit_signal("listgrid", listgrid)
+	emit_signal("key", key)
+	emit_signal("value", key, value)

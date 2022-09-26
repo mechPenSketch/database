@@ -91,3 +91,10 @@ func _on_value_changed(v, i, a = current_value):
 	a[i] = v
 	
 	emit_signal("list_changed", current_value)
+	
+func _on_key_changed(new_k, prev_k, a = current_value):
+	var v = a[prev_k]
+	a.erase(prev_k)
+	a[new_k] = v
+	
+	emit_signal("list_changed", current_value)

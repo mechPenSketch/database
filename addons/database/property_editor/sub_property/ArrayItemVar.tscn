@@ -10,4 +10,5 @@ margin_right = 510.0
 
 [node name="VBoxContainer" parent="." index="1" instance=ExtResource( 2 )]
 
+[connection signal="listgrid" from="." to="VBoxContainer" method="_listgrid_call_itemchange"]
 [connection signal="value" from="." to="VBoxContainer" method="_value"]

@@ -19,13 +19,25 @@ onready var input_color = $ColorPickerButton
 
 signal value_changed
 
-func _listgrid(lg):
+func _listgrid_call_itemchange(lg):
 	listgrid = lg
 	connect("value_changed", listgrid, "_on_value_changed")
 
+func _listgrid_call_keychange(lg):
+	listgrid = lg
+	connect("value_changed", listgrid, "_on_key_changed")
+	connect("value_changed", self, "_on_key_changed")
+
+func _key(k):
+	# REUSE INDEX TO STORE PREVIOUS KEY
+	set_index(k)
+	set_var(k)
+
 func _value(i, v):
-	index = i
+	set_index(i)
+	set_var(v)
 	
+func set_var(v):
 	var opt_btn = $HBoxContainer/OptionButton
 	
 	opt_btn.connect("item_selected", self, "_on_datatype_selected")
@@ -43,6 +55,12 @@ func _value(i, v):
 			input_string.set_text(v)
 		DT_COLOR:
 			input_string.set_color(v)
+
+func _on_key_changed(v, _i, _a):
+	set_index(v)
+
+func set_index(i):
+	index = i
 
 func _on_datatype_selected(index):
 	unset_datatype(prev_datatype)

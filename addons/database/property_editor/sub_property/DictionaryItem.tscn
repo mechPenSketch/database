@@ -14,3 +14,8 @@ margin_left = 0.0
 margin_right = 510.0
 
 [node name="Value" parent="." instance=ExtResource( 2 )]
+
+[connection signal="key" from="." to="Key" method="_key"]
+[connection signal="listgrid" from="." to="Key" method="_listgrid_call_keychange"]
+[connection signal="listgrid" from="." to="Value" method="_listgrid_call_itemchange"]
+[connection signal="value" from="." to="Value" method="_value"]
