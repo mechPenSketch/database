@@ -28,6 +28,7 @@ func _listgrid_call_keychange(lg):
 	listgrid = lg
 	connect("value_changed", listgrid, "_on_key_changed")
 	connect("value_changed", self, "_on_key_changed")
+	connect("value_changed", get_parent(), "_on_key_changed")
 
 func _key(k):
 	# REUSE INDEX TO STORE PREVIOUS KEY
