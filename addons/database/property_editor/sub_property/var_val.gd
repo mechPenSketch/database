@@ -103,13 +103,13 @@ func set_datatype(i):
 		DT_INT:
 			input_number.show()
 			input_number.set_step(1)
-			input_number.set_rounded(true)
+			input_number.set_use_rounded_values(true)
 			
 			input_number.connect("value_changed", self, "_on_valinspinbox_changed")
 		DT_FLOAT:
 			input_number.show()
 			input_number.set_step(0.001)
-			input_number.set_rounded(false)
+			input_number.set_use_rounded_values(false)
 			
 			input_number.connect("value_changed", self, "_on_valinspinbox_changed")
 		DT_STRING:
