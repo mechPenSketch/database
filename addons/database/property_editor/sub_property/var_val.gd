@@ -5,7 +5,8 @@ var listgrid
 var index
 
 enum {DT_NULL, DT_BOOL, DT_INT, DT_FLOAT, DT_STRING, DT_COLOR}
-var datatypes = { TYPE_BOOL: DT_BOOL,
+var datatypes = { TYPE_NIL: DT_NULL,
+	TYPE_BOOL: DT_BOOL,
 	TYPE_INT: DT_INT,
 	TYPE_REAL: DT_FLOAT,
 	TYPE_STRING: DT_STRING,
@@ -45,6 +46,7 @@ func set_var(v):
 	var type_of = typeof(v)
 	var datatype = datatypes[type_of]
 	opt_btn.select(datatype)
+	_on_datatype_selected(datatype)
 	
 	match datatype:
 		DT_BOOL:
@@ -56,7 +58,7 @@ func set_var(v):
 		DT_COLOR:
 			input_string.set_color(v)
 
-func _on_key_changed(v, _i, _a):
+func _on_key_changed(v, _i, _a = null):
 	set_index(v)
 
 func set_index(i):

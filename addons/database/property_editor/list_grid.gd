@@ -22,8 +22,7 @@ func list_items(val):
 			for k in val.keys():
 				var item = pkscn_subprop.instance()
 				add_child(item)
-				item.set_key(k)
-				item.set_value(val[k])
+				item.set_item(k, val[k], self)
 		else:
 			for i in val.size():
 				var item = pkscn_subprop.instance()
@@ -82,9 +81,15 @@ func _on_additem_pressed():
 	add_child(item)
 	var index = item.get_position_in_parent() - 1
 	move_child(item, index)
-	item.set_item(index, default_value, self)
 	
-	current_value.append(default_value)
+	if current_value is Dictionary:
+		var new_key = "key_" + String(index)
+		item.set_item(new_key, default_value, self)
+		current_value[new_key] = default_value
+	else:
+		item.set_item(index, default_value, self)
+		current_value.append(default_value)
+	
 	emit_signal("list_changed", current_value)
 
 func _on_value_changed(v, i, a = current_value):
