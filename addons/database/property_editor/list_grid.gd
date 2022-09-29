@@ -30,6 +30,7 @@ func list_items(val):
 				item.set_item(i, val[i], self)
 	
 	add_child(add_item)
+	add_item.set_h_size_flags(SIZE_EXPAND_FILL)
 	add_item.connect("pressed", self, "_on_additem_pressed")
 
 func set_datatype(type, hint, h_string):
