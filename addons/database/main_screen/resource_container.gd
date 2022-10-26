@@ -31,8 +31,13 @@ func _gui_input(event):
 			current_dragdata = null
 
 func augment_config(property_name, target_folder):
-	#print(category_folder)
-	var config = main_screen.cat_config[category_folder]
+	var dict_config = main_screen.cat_config
+	var config
+	
+	if category_folder in dict_config:
+		config = dict_config[category_folder]
+	else:
+		config = ConfigFile.new()
 	
 	config.set_value(PROPERTIES_SECTION, property_name, target_folder)
 	

@@ -15,6 +15,7 @@ var class_hint = "Resource"
 onready var cat_filesystem = get_parent().get_node("ChooseCat")
 
 const RES_EXTS = ["res", "tres"]
+const IMG_EXTS = ["bmp", "dds", "exr", "hdr", "jpg", "jpeg", "png", "tga", "svg", "svgz", "webp"]
 signal resource_is_set
 
 func _draw():
@@ -79,7 +80,7 @@ func change_options(dir):
 		
 		match err:
 			OK:
-				go_through_folder_for_options(main_dir)
+				go_through_folder_for_options(main_dir, dir)
 			_:
 				print(err)
 
@@ -112,11 +113,20 @@ func go_through_folder_for_options(dir:Directory, base_folder:String = ""):
 			go_through_folder_for_options(sub_directory, folder)
 		
 		# ELSE, IF ITEM IS A FILE
-		elif file_name.get_extension() in RES_EXTS:
-			var final_filename = file_name
+		else:
+			var file_ext = file_name.get_extension()
+			var full_filename = file_name
 			if base_folder:
-				final_filename = base_folder.plus_file(file_name)
-			get_popup().add_item(final_filename, main_screen.OPT_INSTALOAD)
+				full_filename = base_folder.plus_file(file_name)
+			
+			# IF FILE IS AN IMAGE
+			if file_ext in IMG_EXTS:
+				var texture = load(full_filename)
+				get_popup().add_icon_item(texture, "", main_screen.OPT_INSTALOAD)
+			
+			# ELSE, IF FILE IS A RESOURCE
+			elif file_ext in RES_EXTS:
+				get_popup().add_item(file_name, main_screen.OPT_INSTALOAD)
 		
 		file_name = dir.get_next()
 		
@@ -153,7 +163,7 @@ func is_compatable_with_file(file):
 	
 	match class_hint:
 		"Texture":
-			if extension in ["png", "jpeg", "svg"]:
+			if extension in IMG_EXTS:
 				return true
 		_:
 			if extension in RES_EXTS:

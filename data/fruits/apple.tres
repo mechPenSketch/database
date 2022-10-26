@@ -1,6 +1,7 @@
-[gd_resource type="Resource" load_steps=2 format=2]
+[gd_resource type="Resource" load_steps=3 format=2]
 
 [ext_resource path="res://data/fruits/fruit.gd" type="Script" id=1]
+[ext_resource path="res://data/alphabet/alpeh.res" type="Resource" id=2]
 
 [resource]
 script = ExtResource( 1 )
@@ -9,6 +10,7 @@ is_actually_a_veggie = false
 index = 0
 weight = 12.5
 main_color = Color( 1, 0, 0, 1 )
+initial_letter = ExtResource( 2 )
 flavor_text = ""
 leaf_type = ""
 store_level = 0
