@@ -121,12 +121,25 @@ func go_through_folder_for_options(dir:Directory, base_folder:String = ""):
 			
 			# IF FILE IS AN IMAGE
 			if file_ext in IMG_EXTS:
-				var texture = load(full_filename)
-				get_popup().add_icon_item(texture, "", main_screen.OPT_INSTALOAD)
+				var img_txt = ImageTexture.new()
+				var res_img = load(full_filename)
+				var image: Image = res_img.get_data()
+				img_txt.create_from_image(image)
+				
+				# SCALE IMAGE TEXTURE TO THE WIDTH OF OPTION BUTTON
+				var new_width = get_parent_area_size().x * 0.5
+				var new_height = image.get_height() / image.get_width() * new_width
+				img_txt.set_size_override(Vector2(new_width, new_height))
+				
+				get_popup().add_icon_item(img_txt, "", main_screen.OPT_INSTALOAD)
 			
 			# ELSE, IF FILE IS A RESOURCE
 			elif file_ext in RES_EXTS:
 				get_popup().add_item(file_name, main_screen.OPT_INSTALOAD)
+				
+			# ADD FULL FILEPATH TO TOOLTIP
+			var last_index = get_popup().get_item_count() - 1
+			get_popup().set_item_tooltip(last_index, full_filename)
 		
 		file_name = dir.get_next()
 		
