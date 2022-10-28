@@ -54,8 +54,7 @@ func _item_selected(index:int):
 	
 	if id == main_screen.OPT_INSTALOAD:
 		#SETTING A RESOURCE
-		var file_name = get_item_text(index)
-		var full_path = get_category_folder().plus_file(file_name)
+		var full_path = get_item_tooltip(index)
 		emit_signal("resource_is_set", get_parent(), full_path)
 	else:
 		main_screen.item_id_effect(self, id)
@@ -118,6 +117,7 @@ func go_through_folder_for_options(dir:Directory, base_folder:String = ""):
 			var full_filename = file_name
 			if base_folder:
 				full_filename = base_folder.plus_file(file_name)
+			var has_entry = true
 			
 			# IF FILE IS AN IMAGE
 			if file_ext in IMG_EXTS:
@@ -137,9 +137,13 @@ func go_through_folder_for_options(dir:Directory, base_folder:String = ""):
 			elif file_ext in RES_EXTS:
 				get_popup().add_item(file_name, main_screen.OPT_INSTALOAD)
 				
+			else:
+				has_entry = false
+				
 			# ADD FULL FILEPATH TO TOOLTIP
-			var last_index = get_popup().get_item_count() - 1
-			get_popup().set_item_tooltip(last_index, full_filename)
+			if has_entry:
+				var last_index = get_popup().get_item_count() - 1
+				get_popup().set_item_tooltip(last_index, full_filename)
 		
 		file_name = dir.get_next()
 		
