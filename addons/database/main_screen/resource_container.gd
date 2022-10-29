@@ -149,8 +149,15 @@ func list_properties(c, cf:String, fn):
 					option_btn.setup_default_options()
 					
 					if value:
-						var res_name = value.get_path().rsplit("/")[-1]
-						option_btn.set_text(res_name)
+						var full_path = value.get_path()
+						var ext = full_path.get_extension()
+						
+						if ext in option_btn.IMG_EXTS:
+							option_btn.set_img(full_path)
+							option_btn.set_text("")
+						else:
+							var res_name = full_path.rsplit("/")[-1]
+							option_btn.set_text(res_name)
 					else:
 						option_btn.set_text(option_btn.NULL_VALUE_TEXT)
 					

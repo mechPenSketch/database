@@ -121,15 +121,7 @@ func go_through_folder_for_options(dir:Directory, base_folder:String = ""):
 			
 			# IF FILE IS AN IMAGE
 			if file_ext in IMG_EXTS:
-				var img_txt = ImageTexture.new()
-				var res_img = load(full_filename)
-				var image: Image = res_img.get_data()
-				img_txt.create_from_image(image)
-				
-				# SCALE IMAGE TEXTURE TO THE WIDTH OF OPTION BUTTON
-				var new_width = get_parent_area_size().x * 0.5
-				var new_height = image.get_height() / image.get_width() * new_width
-				img_txt.set_size_override(Vector2(new_width, new_height))
+				var img_txt = get_image_texture(full_filename)
 				
 				get_popup().add_icon_item(img_txt, "", main_screen.OPT_INSTALOAD)
 			
@@ -160,6 +152,19 @@ func get_icon_name(cn)->String:
 			return "Image"
 		_:
 			return cn
+
+func get_image_texture(full_filename)->ImageTexture:
+	var img_txt = ImageTexture.new()
+	var res_img = load(full_filename)
+	var image: Image = res_img.get_data()
+	img_txt.create_from_image(image)
+				
+	# SCALE IMAGE TEXTURE TO THE WIDTH OF OPTION BUTTON
+	var new_width = get_parent_area_size().x * 0.5
+	var new_height = image.get_height() / image.get_width() * new_width
+	img_txt.set_size_override(Vector2(new_width, new_height))
+				
+	return img_txt
 
 func get_property_name():
 	return get_parent().property_name
@@ -203,6 +208,9 @@ func reset_text():
 func set_dragdata(data):
 	drag_data = data
 	update()
+
+func set_img(string):
+	set_button_icon(get_image_texture(string))
 
 func setup_default_options():
 	var popup:PopupMenu = get_popup()
