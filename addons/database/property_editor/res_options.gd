@@ -55,6 +55,7 @@ func _item_selected(index:int):
 	if id == main_screen.OPT_INSTALOAD:
 		#SETTING A RESOURCE
 		var full_path = get_item_tooltip(index)
+		set_tooltip(full_path)
 		emit_signal("resource_is_set", get_parent(), full_path)
 	else:
 		main_screen.item_id_effect(self, id)

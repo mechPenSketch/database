@@ -158,6 +158,8 @@ func list_properties(c, cf:String, fn):
 						else:
 							var res_name = full_path.rsplit("/")[-1]
 							option_btn.set_text(res_name)
+							
+						option_btn.set_tooltip(full_path)
 					else:
 						option_btn.set_text(option_btn.NULL_VALUE_TEXT)
 					
