@@ -162,7 +162,7 @@ func get_image_texture(full_filename)->ImageTexture:
 	img_txt.create_from_image(image)
 	
 	# SCALE IMAGE TEXTURE TO x0.75 WIDTH OF OPTION BUTTON
-	var new_width = get_global_rect().size.x * 0.375
+	var new_width = get_parent_area_size().x * 0.75
 	if image.get_width() > new_width:
 		var new_height = image.get_height() / image.get_width() * new_width
 		img_txt.set_size_override(Vector2(new_width, new_height))
