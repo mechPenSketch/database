@@ -16,6 +16,7 @@ onready var cat_filesystem = get_parent().get_node("ChooseCat")
 
 const RES_EXTS = ["res", "tres"]
 const IMG_EXTS = ["bmp", "dds", "exr", "hdr", "jpg", "jpeg", "png", "tga", "svg", "svgz", "webp"]
+const AUD_EXTS = ["mp3", "ogg", "wav"]
 signal resource_is_set
 
 func _draw():
