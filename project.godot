@@ -6,33 +6,18 @@
 ;   [section] ; section goes between []
 ;   param=value ; assign values to parameters
 
-config_version=4
-
-_global_script_classes=[ {
-"base": "HBoxContainer",
-"class": "DataPropertyEditor",
-"language": "GDScript",
-"path": "res://addons/database/property_editor/property_editor.gd"
-}, {
-"base": "VBoxContainer",
-"class": "DataPropertyEditorWide",
-"language": "GDScript",
-"path": "res://addons/database/property_editor/property_editor_wide.gd"
-} ]
-_global_script_class_icons={
-"DataPropertyEditor": "",
-"DataPropertyEditorWide": ""
-}
+config_version=5
 
 [application]
 
 config/name="Database"
 run/main_scene="res://addons/database/main_screen/MainScreen.tscn"
+config/features=PackedStringArray("4.0")
 config/icon="res://icon.png"
 
 [editor_plugins]
 
-enabled=PoolStringArray( "res://addons/database/plugin.cfg" )
+enabled=PackedStringArray("res://addons/database/plugin.cfg")
 
 [physics]
 
@@ -40,7 +25,7 @@ common/enable_pause_aware_picking=true
 
 [rendering]
 
+renderer/rendering_method="gl_compatibility"
+environment/defaults/default_environment="res://default_env.tres"
 quality/driver/driver_name="GLES2"
 vram_compression/import_etc=true
-vram_compression/import_etc2=false
-environment/default_environment="res://default_env.tres"

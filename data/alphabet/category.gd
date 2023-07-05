@@ -1,6 +1,6 @@
 extends Resource
 
-export(Color, RGBA) var color
-export(Array) var initials_of
-export(Texture) var shape
-export(Dictionary) var trivia
+@export var color # (Color, RGBA)
+@export var initials_of: Array
+@export var shape: Texture2D
+@export var trivia: Dictionary

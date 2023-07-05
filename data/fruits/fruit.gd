@@ -1,18 +1,18 @@
 extends Resource
 
-export(String) var name
-export(bool) var is_actually_a_veggie
-export(int) var index
+@export var name: String
+@export var is_actually_a_veggie: bool
+@export var index: int
 
-export(float) var weight = "20.0"
-export(Color, RGB) var main_color
-export(Resource) var initial_letter
+@export var weight: float = "20.0"
+@export var main_color # (Color, RGB)
+@export var initial_letter: Resource
 
-export(String, MULTILINE) var flavor_text
+@export var flavor_text # (String, MULTILINE)
 
-export(String, "Sheet", "Spikey", "Bushy") var leaf_type
+@export var leaf_type # (String, "Sheet", "Spikey", "Bushy")
 enum LEVELS { BASEMENT_1=-1, GROUND, LEVEL_1, LEVEL_2 }
-export(LEVELS) var store_level
-export(int, "Underground", "On Ground", "High Sky") var grown_on
+@export var store_level: LEVELS
+@export var grown_on # (int, "Underground", "On Ground", "High Sky")
 
-export(Array, float) var weight_samples
+@export var weight_samples # (Array, float)
