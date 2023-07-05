@@ -30,6 +30,7 @@ func _gui_input(event):
 			set_dragdata_onto_props($VBoxContainer, null)
 			current_dragdata = null
 
+
 func augment_config(property_name, target_folder):
 	var dict_config = main_screen.cat_config
 	var config
@@ -41,14 +42,16 @@ func augment_config(property_name, target_folder):
 	
 	config.set_value(PROPERTIES_SECTION, property_name, target_folder)
 	
-	var config_path = category_folder.plus_file("config.cfg")
+	var config_path = category_folder.path_join("config.cfg")
 	config.save(config_path)
 	# .cfg FILES ARE NOT RECORDED IN FILESYSTEM
+
 
 func _can_drop_data(_p, data):
 	set_dragdata_onto_props($VBoxContainer, data)
 	current_dragdata = data
 	return false
+
 
 func set_dragdata_onto_props(node, data):
 	if node is DataPropertyEditor:
@@ -58,9 +61,10 @@ func set_dragdata_onto_props(node, data):
 		for c in node.get_children():
 			set_dragdata_onto_props(c, data)
 
+
 func list_properties(c, cf:String, fn):
 	main_screen = c
-	file_path = cf.plus_file(fn)
+	file_path = cf.path_join(fn)
 	file_name = fn
 	category_folder = cf
 	var index = [0, 0]
@@ -167,6 +171,7 @@ func list_properties(c, cf:String, fn):
 					
 					grid_container.connect("list_changed", Callable(self, "_on_value_changed").bind(pe_inst.tree_index))
 
+
 func get_pe_by_type(property):
 	match property["type"]:
 		TYPE_BOOL:
@@ -205,6 +210,7 @@ func get_pe_by_type(property):
 				_:
 					return "String"
 
+
 func _on_enum_selected(index, optbtn):
 	var node = optbtn.get_parent()
 	var value = optbtn.option_values[index]
@@ -214,6 +220,7 @@ func _on_enum_selected(index, optbtn):
 	if value != node.prev_val:
 		set_unsaved_changes(true)
 
+
 func _on_property_resource_set(node, res_path):
 	var value = null if !res_path else ResourceLoader.load(res_path)
 	
@@ -221,6 +228,7 @@ func _on_property_resource_set(node, res_path):
 	
 	if value != node.prev_val:
 		set_unsaved_changes(true)
+
 
 func _on_textedit_changed(tree_index):
 	var node = $VBoxContainer.get_child(tree_index[0])
@@ -230,6 +238,7 @@ func _on_textedit_changed(tree_index):
 	
 	if value != node.prev_val:
 		set_unsaved_changes(true)
+
 
 func _on_value_changed(value, tree_index):
 	var node = $VBoxContainer
@@ -241,11 +250,13 @@ func _on_value_changed(value, tree_index):
 	if value != node.prev_val:
 		set_unsaved_changes(true)
 
+
 func save_resource():
 	if associated_treeitem:
 		ResourceSaver.save(file_path, associated_resource)
 		save_property_aftermath($VBoxContainer)
 		set_unsaved_changes(false)
+
 
 func save_property_aftermath(node):
 	if node is DataPropertyEditor or node is DataPropertyEditorWide:
@@ -253,6 +264,7 @@ func save_property_aftermath(node):
 	else:
 		for child in node.get_children():
 			save_property_aftermath(child)
+
 
 func set_unsaved_changes(value:bool):
 	has_unsaved_changes = value
@@ -263,8 +275,10 @@ func set_unsaved_changes(value:bool):
 	
 	associated_treeitem.set_text(0, new_text)
 
+
 func set_editor_plugin(node):
 	editor_plugin = node
+
 
 func update_property_options():
 	var config_by_cat = main_screen.cat_config

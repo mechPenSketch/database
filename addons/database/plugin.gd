@@ -9,7 +9,7 @@ var current_main_screen_is_database
 
 func _enter_tree():
 	# CHECK FOR DATA FOLDER
-	var dir = DirAccess.new()
+	var dir = DirAccess.open("res://")
 	var dir_data = "data"
 	if !dir.dir_exists(dir_data):
 		dir.make_dir(dir_data)
@@ -30,9 +30,11 @@ func _enter_tree():
 	
 	main_panel_instance.connect("gui_input", Callable(self, "_on_main_gui_input"))
 
+
 func _exit_tree():
 	if main_panel_instance:
 		main_panel_instance.queue_free()
+
 
 func _input(event):
 	if current_main_screen_is_database and event is InputEventKey and event.is_pressed() and event.get_keycode() == KEY_S and event.is_alt_pressed():
@@ -42,11 +44,14 @@ func _input(event):
 			for c in tab_container.get_children():
 				c.save_resource()
 
+
 func _main_screen_changed(screen_name):
 	current_main_screen_is_database = screen_name == _get_plugin_name()
 
+
 func _on_changing_filesystem():
 	get_editor_interface().get_resource_filesystem().scan()
+
 
 func _on_main_gui_input(event:InputEvent):
 	if event is InputEventMouse:
@@ -56,15 +61,19 @@ func _on_main_gui_input(event:InputEvent):
 			var drag_data = get_editor_interface().get_file_system_dock().get_drag_data_fw(mouse_pos, get_editor_interface().get_file_system_dock().get_node("@@4109/@@4120"))
 			print(drag_data)
 
+
 func _has_main_screen():
 	return true
-	
+
+
 func _make_visible(visible):
 	if main_panel_instance:
 		main_panel_instance.visible = visible
-	
+
+
 func _get_plugin_name():
 	return "Database"
-	
+
+
 func _get_plugin_icon():
 	return preload("icon.svg")

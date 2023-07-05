@@ -35,7 +35,8 @@ func _newcat_pressed():
 	
 	# FOCUS ON INPUT
 	newcat_name.grab_focus()
-	
+
+
 func _newres_pressed():
 	# SET CATEGORY
 	var selected_item = get_selected_category()
@@ -47,9 +48,9 @@ func _newres_pressed():
 	
 	open_newres_popup(target_cat)
 
+
 func _newcat_confirmed():
-	var base_dir = DirAccess.new()
-	var open_error = base_dir.open(DATA_DIR)
+	var base_dir = DirAccess.open(DATA_DIR)
 	
 	var new_folder_name = newcat_name.get_text()
 	
@@ -59,9 +60,8 @@ func _newcat_confirmed():
 		base_dir.make_dir(new_folder_name)
 		
 		# ADD SCRIPT
-		var new_filepath = DATA_DIR.plus_file(new_folder_name).plus_file("category.gd")
-		var file = File.new()
-		file.open(new_filepath, File.WRITE)
+		var new_filepath = DATA_DIR.path_join(new_folder_name).path_join("category.gd")
+		var file = FileAccess.open(new_filepath, FileAccess.WRITE)
 		file.store_string("extends Resource")
 		file.close()
 	
@@ -70,20 +70,20 @@ func _newcat_confirmed():
 	
 	emit_signal("changing_filesystem")
 
+
 func _newres_confirmed():
-	var base_dir = DirAccess.new()
-	var open_error = base_dir.open(DATA_DIR.plus_file(res_cat_options.get_item_text(res_cat_options.get_selected())))
+	var base_dir = DirAccess.open(DATA_DIR.path_join(res_cat_options.get_item_text(res_cat_options.get_selected())))
 	
 	var newres_name_ext = newres_name.get_text() + ".tres"
 	
 	if base_dir.file_exists(newres_name_ext):
 		$Duplicate.popup_centered()
 	else:
-		var full_path = base_dir.get_current_dir().plus_file(newres_name_ext)
+		var full_path = base_dir.get_current_dir().path_join(newres_name_ext)
 		var new_res = Resource.new()
 		
 		# SETTING SCRIPT
-		var new_script = load(base_dir.get_current_dir().plus_file("category.gd"))
+		var new_script = load(base_dir.get_current_dir().path_join("category.gd"))
 		new_res.set_script(new_script)
 		
 		ResourceSaver.save(full_path, new_res)
@@ -93,9 +93,11 @@ func _newres_confirmed():
 	
 	emit_signal("changing_filesystem")
 
+
 func _on_filesystem_changed():
 	var search_text = $VBoxContainer/HSplitContainer/VBoxContainer/Search.get_text()
 	update_tree()
+
 
 func _on_item_selected():
 	var tree_item = tree_list.get_selected()
@@ -108,11 +110,14 @@ func _on_item_selected():
 		var resource_index = filename_to_rindx[selected_filename]
 		data_container.set_current_tab(resource_index)
 
+
 func _on_search_changed(new_text):
 	update_tree(new_text)
 
+
 func _option_pressed_by_id(id):
 	item_id_effect(selected_resoptions, id)
+
 
 func add_options_to_popup(popup, has_value=false, with_category=false):
 	var editor_control = editor_interface.get_base_control()
@@ -133,6 +138,7 @@ func add_options_to_popup(popup, has_value=false, with_category=false):
 		
 		popup.add_item("Show in Filesystem", OPT_SHOWINFOLDER)
 
+
 func get_matched_tree_item(treeitem, fname):
 	if fname in treeitem.get_text(TICOL_FILENAME):
 		return treeitem
@@ -149,6 +155,7 @@ func get_matched_tree_item(treeitem, fname):
 		
 	return null
 
+
 func get_selected_category():
 	var value = tree_list.get_selected()
 	
@@ -157,6 +164,7 @@ func get_selected_category():
 			value = value.get_parent()
 		
 	return value
+
 
 func go_through_folder_for_update(dir, search, parent_ti=null):
 	var file_name = dir.get_next()
@@ -173,13 +181,13 @@ func go_through_folder_for_update(dir, search, parent_ti=null):
 			category_folder.set_text(TICOL_FILENAME, file_name)
 			
 			# ADD TO NEW RESOURCE > CATEGORY
-			var sub_dir_path = dir.get_current_dir().plus_file(file_name)
+			var sub_dir_path = dir.get_current_dir().path_join(file_name)
 			var folder_name = sub_dir_path.trim_prefix(DATA_DIR + "/")
 			res_cat_options.add_item(folder_name)
 			
 			# GO THROUGH SUBFOLDER
-			var sub_dir = DirAccess.new()
-			var open_error = sub_dir.open(sub_dir_path)
+			var sub_dir = DirAccess.open(sub_dir_path)
+			var open_error = DirAccess.get_open_error()
 			match open_error:
 				OK:
 					sub_dir.list_dir_begin() # TODOGODOT4 fill missing arguments https://github.com/godotengine/godot/pull/40547
@@ -219,12 +227,13 @@ func go_through_folder_for_update(dir, search, parent_ti=null):
 			var cat_path = dir.get_current_dir()
 			if !cat_path in cat_config.keys():
 				var config = ConfigFile.new()
-				config.load(dir.get_current_dir().plus_file(file_name))
+				config.load(dir.get_current_dir().path_join(file_name))
 				cat_config[cat_path] = config
 		
 		file_name = dir.get_next()
 		
 	dir.list_dir_end()
+	
 	
 func item_id_effect(options_node, id):
 	match id:
@@ -249,9 +258,10 @@ func item_id_effect(options_node, id):
 		OPT_CLEAR:
 			options_node.clear_value()
 		OPT_SHOWINFOLDER:
-			var filepath = options_node.get_category_folder().plus_file(options_node.get_text())
+			var filepath = options_node.get_category_folder().path_join(options_node.get_text())
 			filesystem_dock.navigate_to_path(filepath)
-	
+
+
 func open_newres_popup(target_cat):
 	$NewResource.popup_centered()
 	
@@ -263,6 +273,7 @@ func open_newres_popup(target_cat):
 	
 	# FOCUS ON INPUT
 	newres_name.grab_focus()
+
 
 func set_editor_plugin(node):
 	editor_plugin = node
@@ -286,6 +297,7 @@ func set_editor_plugin(node):
 	add_options_to_popup(resource_options, true)
 	resource_options.set_as_minsize()
 
+
 func update_tree(search:String = ""):
 	# UNLINK TREE ITEM FROM RESOURCES
 	for c in data_container.get_children():
@@ -294,8 +306,8 @@ func update_tree(search:String = ""):
 	tree_list.clear()
 	res_cat_options.clear()
 	
-	var main_dir = DirAccess.new()
-	var open_error = main_dir.open(DATA_DIR)
+	var main_dir = DirAccess.open(DATA_DIR)
+	var open_error = DirAccess.get_open_error()
 	
 	match open_error:
 		OK:
