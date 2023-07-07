@@ -11,8 +11,9 @@ config_version=5
 [application]
 
 config/name="Database"
+config/tags=PackedStringArray("assets")
 run/main_scene="res://addons/database/main_screen/MainScreen.tscn"
-config/features=PackedStringArray("4.0")
+config/features=PackedStringArray("4.1")
 config/icon="res://icon.png"
 
 [editor_plugins]

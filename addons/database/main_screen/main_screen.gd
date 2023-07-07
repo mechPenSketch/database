@@ -129,9 +129,9 @@ func add_options_to_popup(popup, has_value=false, with_category=false):
 	popup.add_icon_item(icon_folder, "Limit to Category", OPT_CAT)
 	
 	if has_value:
-		var icon_edit = editor_control.get_icon("Edit", "EditorIcons")
+		var icon_edit = editor_control.get_theme_icon("Edit", "EditorIcons")
 		popup.add_icon_item(icon_edit, "Edit", OPT_EDIT)
-		var icon_clear = editor_control.get_icon("Clear", "EditorIcons")
+		var icon_clear = editor_control.get_theme_icon("Clear", "EditorIcons")
 		popup.add_icon_item(icon_clear, "Clear", OPT_CLEAR)
 		
 		popup.add_separator()
@@ -283,19 +283,16 @@ func set_editor_plugin(node):
 	# ICONS
 	var editor_control = editor_interface.get_base_control()
 	#	SEARCH
-	$VBoxContainer/HSplitContainer/VBoxContainer/Search.set_right_icon(editor_control.get_icon("Search", "EditorIcons"))
+	$VBoxContainer/HSplitContainer/VBoxContainer/Search.set_right_icon(editor_control.get_theme_icon("Search", "EditorIcons"))
 	
 	#	FOLDERS AND RESOURCES
-	icon_folder = editor_control.get_icon("Folder", "EditorIcons")
-	icon_resource = editor_control.get_icon("ResourcePreloader", "EditorIcons")
+	icon_folder = editor_control.get_theme_icon("Folder", "EditorIcons")
+	icon_resource = editor_control.get_theme_icon("ResourcePreloader", "EditorIcons")
 	
 	# USING EDITOR PLUGIN TO ADD ONTO RESOURCE OPTIONS
 	add_options_to_popup(empty_options)
-	empty_options.set_as_minsize()
 	add_options_to_popup(empty_wcat, false, true)
-	empty_wcat.set_as_minsize()
 	add_options_to_popup(resource_options, true)
-	resource_options.set_as_minsize()
 
 
 func update_tree(search:String = ""):
